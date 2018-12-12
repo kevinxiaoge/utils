@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>day37Linux.md</title><link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'><style type='text/css'>html, body {overflow-x: initial !important;}html { font-size: 14px; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; line-height: 1.42857; color: rgb(51, 51, 51); overflow-x: hidden; background-color: rgb(255, 255, 255); }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: rgb(181, 214, 252); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export #write { margin: 0px auto; }
+#write > p:first-child, #write > ul:first-child, #write > ol:first-child, #write > pre:first-child, #write > blockquote:first-child, #write > div:first-child, #write > table:first-child { margin-top: 30px; }
+img { max-width: 100%; }
+input, button, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+::before, ::after, * { box-sizing: border-box; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write div, #write pre { width: inherit; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { position: relative; }
+h1 { font-size: 2rem; }
+p { -webkit-margin-before: 1rem; -webkit-margin-after: 1rem; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }
+.mathjax-block { margin-top: 0px; margin-bottom: 0px; -webkit-margin-before: 0rem; -webkit-margin-after: 0rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: bold; font-style: italic; }
+a { cursor: pointer; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; margin: 4px 0px 0px; }
+tr { page-break-inside: avoid; page-break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; page-break-inside: auto; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+pre { white-space: pre-wrap; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences, pre.md-fences { font-size: 0.9rem; display: block; page-break-inside: avoid; text-align: left; overflow: visible; white-space: pre; position: relative !important; background: inherit; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -1.6em; margin-bottom: -1.6em; }
+.md-fences.mock-cm { white-space: pre-wrap; }
+.show-fences-line-number pre.md-fences { padding-left: 0px; }
+.show-fences-line-number pre.md-fences.mock-cm { padding-left: 40px; }
+.footnotes { color: rgb(136, 136, 136); font-size: 0.9rem; padding-top: 1em; padding-bottom: 1em; }
+.footnotes + .footnotes { margin-top: -1em; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: normal; text-align: left; box-sizing: content-box; direction: ltr; background: transparent; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li p, li .mathjax-block { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; }
+@media print { 
+  html, body { height: 100%; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  h1, h2, h3, h4, h5, h6 { page-break-after: avoid; orphans: 2; }
+  p { orphans: 4; }
+  @page { margin: 20mm 0mm; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+#write pre.md-meta-block { font-size: 0.8rem; min-height: 2.86rem; white-space: pre-wrap; display: block; background: rgb(204, 204, 204); }
+p > .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.mathjax-block { white-space: pre; overflow: hidden; width: 100%; }
+p + .mathjax-block { margin-top: -1.143rem; }
+.mathjax-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: none; box-shadow: none; }
+.task-list { list-style-type: none; }
+.task-list-item { position: relative; padding-left: 1em; }
+.task-list-item input { position: absolute; top: 0px; left: 0px; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc::after, .md-toc-content::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: bold; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+.md-toc-h6 { margin-left: 12em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 8em; }
+  .md-toc-h6 { margin-left: 9.5em; }
+}
+a.md-toc-inner { color: inherit; font-size: inherit; font-style: inherit; font-weight: inherit; text-decoration: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+.md-tag { opacity: 0.5; }
+code { text-align: left; }
+h1 .md-tag, h2 .md-tag, h3 .md-tag, h4 .md-tag, h5 .md-tag, h6 .md-tag { font-weight: initial; opacity: 0.35; }
+a.md-header-anchor.md-print-anchor { border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: none !important; text-decoration: initial !important; text-shadow: initial !important; background: transparent !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.mathjax-block .MathJax_SVG_Display { text-align: center; margin: 1em 0em; position: relative; text-indent: 0px; max-width: none; max-height: none; min-width: 0px; min-height: 0px; width: 100%; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: monospace; }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+
+
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: normal; src: local(Open Sans Regular), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: normal; src: local(Open Sans Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400i.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: bold; src: local(Open Sans Bold), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: bold; src: local(Open Sans Bold Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700i.woff) format(woff); }
+html { font-size: 16px; }
+body { font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+#write { max-width: 800px; margin: 0px auto; padding: 20px 30px 40px; }
+#write::after { height: 80px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+body > :first-child { margin-top: 0px !important; }
+body > :last-child { margin-bottom: 0px !important; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; -webkit-font-smoothing: antialiased; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 4px; padding: 0px; margin: 16px 0px; border-width: 0px 0px 1px; border-style: none none solid; overflow: hidden; box-sizing: content-box; border-bottom-color: rgb(221, 221, 221); background-color: rgb(231, 231, 231); }
+body > h2:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child + h2 { margin-top: 0px; padding-top: 0px; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child { margin-top: 0px; padding-top: 0px; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 { margin-top: 0px; padding-top: 0px; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p { margin-top: 0px; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; }
+table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); margin: 0px; padding: 0px; background-color: white; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); }
+pre.md-fences, .md-fences, code, tt { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; background-color: rgb(248, 248, 248); }
+pre.md-fences, .md-fences { margin-bottom: 15px; margin-top: 15px; padding: 8px 1em 6px; }
+.task-list { padding-left: 0px; }
+.task-list-item { padding-left: 32px; }
+.task-list-item input { top: 3px; left: 8px; }
+@media screen and (min-width: 914px) { 
+}
+@media print { 
+  table, pre { page-break-inside: avoid; }
+  pre { word-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; background-color: rgb(247, 247, 247); }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; color: inherit; background-color: rgb(248, 248, 248); }
+.md-tag { color: inherit; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; background-color: rgb(250, 250, 250); }
+
+
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-node'><h1><a name='header-c1' class='md-header-anchor '></a>day28 Linux</h1><p><strong>今日案例任务</strong></p><ul><li>安装虚拟机</li><li>安装Linux系统</li><li>学习Linux常用命令</li></ul><p><strong>教学目标</strong></p><ul><li>可以独立安装CentOS</li><li>熟练使用磁盘管理命令</li><li>熟练使用文件管理命令</li><li>熟练使用文档编辑命令</li><li>熟练使用系统命令</li><li>熟练使用备份压缩命令</li></ul><h3><a name='header-c39' class='md-header-anchor '></a>一,Linux概述</h3><h4><a name='header-c40' class='md-header-anchor '></a>1.学习Linux之前先了解Unix</h4><p>​	Unix是一个强大的多用户、多任务操作系统。</p><p>​	于1969年在AT&amp;T的贝尔实验室开发。</p><p>​	UNIX的商标权由国际开放标准组织（The Open Group）所拥有。</p><p>​	UNIX操作系统是商业版，需要收费，价格比Microsoft Windows正版要贵一些。</p><h4><a name='header-c49' class='md-header-anchor '></a>2.Linux简介</h4><p>​	Linux是基于Unix的</p><p>​	Linux是一种自由和开放源码的操作系统，存在着许多不同的Linux版本，但它们都使用了Linux内核。Linux可安装在各种计算机硬件设备中，比如手机(安卓)、平板电脑、路由器、台式计算机</p><p>​	</p><p><img src='img/tu_1.png' alt='img' /></p><p>诞生于1991 年10 月5 日。是由芬兰赫尔辛基大学学生Linus Torvalds和后来加入的众多爱好者共同开发完成</p><p><img src='img/tu_2.png' alt='img' /><img src='img/tu_3.png' alt='img' /></p><p></p><h4><a name='header-c64' class='md-header-anchor '></a>3.Linux的历史</h4><p>​	Linux最初是由芬兰赫尔辛基大学学生Linus Torvalds由于自己不满意教学中使用的MINIX操作系统， 所以在1990年底由于个人爱好设计出了LINUX系统核心。后来发布于芬兰最大的ftp服务器上，用户可以免费下载，所以它的周边的程序越来越多，Linux本身也逐渐发展壮大起来，之后Linux在不到三年的时间里成为了一个功能完善，稳定可靠的操作系统.</p><h4><a name='header-c67' class='md-header-anchor '></a>4.Linux系统的应用(了解)</h4><ul><li><p>服务器系统 (Web应用服务器(Tomcat)、接口服务器、DNS(域名解析服务器)、FTP、数据库服务器等等)</p><p>这是 Linux 当前最热门的应用了！ 承袭了 Unix 高稳定性的良好传统，Linux 上面的网络功能特别的稳定和强大！
+此外，由于 GNU 计划与Linux 的 GPL 授权模式，很多优秀的软件都在 Linux 上面发展，且这些在 Linux 上面的服务器软件几乎都是自由软件！因此，做为一部网络服务器，例如 WWW, Mail Server, File Server 等等，Linux 绝对是上上之选！当然，这也是 Linux 的强项</p></li><li><p>关键任务的应用(金融数据库、大型企业网管环境)</p><p>目前很多金融业界都已经使用 Linux 做为他们的关键任务应用。所谓的关键任务就是该企业最重要的业务！ 举例来说，金融业最重要的就是那些投资者、帐户的数据了，这些数据大多使用数据库系统来作为存取接口， 这些数据很重要吧！很多金融业将这么重要的任务交给了 Linux 了！</p></li><li><p>学术机构的高效能运算任务</p><p>由于Linux 的创造者本身就是个计算机性能力，所以Linux 有强大的运算能力;并且 Linux 具有支持度相当广泛的 GCC 编译软件， 因此 Linux 在这方面的优势可是相当明显的！</p></li><li><p>嵌入式系统</p><p>路由器、防火墙、手机(安卓系统,内核是Linux)、PDA、IP 分享器、交换器、家电用品的微电脑控制器等等。</p></li><li><p>桌面应用系统 </p></li><li><p>移动手持系统</p></li></ul><h4><a name='header-c96' class='md-header-anchor '></a>5.Linux的版本</h4><p>Linux的版本分为两种：内核版本和发行版本；</p><ul><li>内核版本是指在Linus领导下的内核小组开发维护的系统内核的版本号 ；</li><li>发行版本是一些组织和公司根据自己发行版的不同而自定的 </li></ul><h4><a name='header-c106' class='md-header-anchor '></a>6.Linux的主流版本</h4><p></p><p><img src='img/tu_4.png' alt='img' /></p><h3><a name='header-c111' class='md-header-anchor '></a>二,Linux的安装</h3><h4><a name='header-c112' class='md-header-anchor '></a>1.虚拟机的安装</h4><h5><a name='header-c113' class='md-header-anchor '></a>1.1什么是虚拟机</h5><p>​	虚拟机：一台虚拟的电脑.</p><p>​	虚拟机软件:</p><p>​		 VmWare:收费的.微软公司</p><p>​		 VirtualBox:免费的.   Oracle公司的  mysql  oracle<br/></p><h5><a name='header-c122' class='md-header-anchor '></a>1.2虚拟机的安装</h5><p>​	参考《day26--01.VMware使用.pdf 》</p><h4><a name='header-c125' class='md-header-anchor '></a>2. CentOS的安装</h4><p>​	参考《day26--02.Linux(CentOS)安装.pdf》</p><h4><a name='header-c128' class='md-header-anchor '></a>3.Linux的目录结构</h4><p><img src='img/tu_5.png' alt='img' /></p><p>​	/:根目录</p><p>​		root:超级管理员(root)的家</p><p>​		home:其他用户(普通用户)的家</p><p>​		etc:配置文件</p><p>​		usr:存放共享文件的(软件的安装路径)</p><p>​		lib:依赖库</p><h3><a name='header-c143' class='md-header-anchor '></a>三,Linux的远程访问</h3><h4><a name='header-c144' class='md-header-anchor '></a>1.安装一个远程访问的软件:Xshell 5</h4><h4><a name='header-c145' class='md-header-anchor '></a>2.连接Linux</h4><h3><a name='header-c146' class='md-header-anchor '></a>四, Linux的常用命令</h3><h4><a name='header-c147' class='md-header-anchor '></a>1,磁盘管理</h4><h5><a name='header-c148' class='md-header-anchor '></a>1.1.切换目录命令cd(change directory)</h5><p>​	<strong>cd app</strong>	切换到app目录</p><p>​	<strong>cd ..</strong>         切换到上一层目录</p><p>​	cd /          切换到<strong>系统根目录</strong></p><p>​	<strong>cd ~</strong>    	 切换到用户主目录(回到超级管理员的家)</p><p>​	cd -           切换到上一个所在目录(上一个操作的)(了解)</p><h5><a name='header-c159' class='md-header-anchor '></a>1.2.列出文件列表的命令 ls ll dir</h5><p>​	ls(list)是一个非常有用的命令，用来显示当前目录下的内容。配合参数的使用，能以不同的方式显示目录内容。</p><ul><li><p>格式</p><pre class='md-fences mock-cm' style='display:block;position:relative'>ls[参数] [路径或文件名]</pre><p><strong>ls</strong>		展示当前目录下资源（不包含隐藏的文件）(记住)</p><p>ls -a		显示当前目录的所有文件或目录（包含隐藏的文件）, 文件带点的是隐藏文件</p><p><strong>ls -l  	展示所有文件(不包含隐藏文件)的详细信息,  可以简写成 ll</strong></p><p><strong>ll -h		在ll的基础上友好显示文件大小</strong>(记住)</p><p>ls -al	展示文件的详细信息（包含隐藏的文件）,可以简写成&quot;ll -a&quot;</p><p><strong>ll -ah       展示文件的详细信息（包含隐藏的文件）,并友好显示文件大小</strong></p></li></ul><h5><a name='header-c179' class='md-header-anchor '></a>1.3.创建目录和移除目录mkdir rmdir</h5><h6><a name='header-c180' class='md-header-anchor '></a>1.3.1mkdir(make directory):</h6><ul><li><p>用来创建子目录.</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mkdir app 在当前目录下创建app目录
+
+mkdir –p app2/test  创建一个目录app2并且在app2目录中再创建一个test目录</pre><ul><li>练习一:在root目录下创建一个&quot;app&quot;目录为</li><li>练习二:在root目录下创建一个&quot;app2&quot;目录并在app2目录中创建一个test目录</li></ul></li></ul><h6><a name='header-c193' class='md-header-anchor '></a>1.3.2rmdir(remove directory)</h6><ul><li><p>用来删除“空”的子目录(了解)，注意只能删除空目录</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rmdir app   删除app目录</pre></li></ul><ul><li>练习:移除&quot;app&quot;目录</li></ul><h5><a name='header-c203' class='md-header-anchor '></a>1.4pwd(了解)</h5><p>​	pwd:打印当前工作的目录</p><h4><a name='header-c206' class='md-header-anchor '></a>2.文件浏览(cat、more、less、 tai)(不太重要)</h4><p>先进入root目录,cd ~</p><h5><a name='header-c209' class='md-header-anchor '></a>2.1cat(重点)</h5><ul><li><p>用于显示文件的内容, 格式：cat[参数]&lt;文件名&gt;</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cat install.log    查看install.log的内容	</pre><ul><li>练习:在root目录下，查看install.log文件的内容</li></ul></li></ul><h5><a name='header-c219' class='md-header-anchor '></a>2.2more(掌握)</h5><ul><li><p>分页查看。最开始是显示一页内容，然后按空格键显示下一页。回车显示下一行内容(逐行查看)。按 q 或者(Control+c)键退出查看。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>more install.log </pre><ul><li>练习:在root目录下,分页查看install.log文件的内容</li></ul></li></ul><h5><a name='header-c229' class='md-header-anchor '></a>2.3less(跟more差不多)</h5><ul><li><p>用法和more类似，不同的是less可以通过PgUp、PgDn键来控制上下翻页。</p></li><li><p>按q就退出查看</p><pre class='md-fences mock-cm' style='display:block;position:relative'>less install.log</pre></li></ul><h5><a name='header-c238' class='md-header-anchor '></a>2.4tail(掌握)</h5><p>tail命令是在实际使用过程中使用非常多的一个命令，它的功能是：用于显示文件后几行的内容。</p><ul><li><p>tail -n 文件名:查看文件的末尾几行</p><pre class='md-fences mock-cm' style='display:block;position:relative'>tail -10 install.log</pre><ul><li>练习:在root目录下，查看install.log文件的最后10行</li></ul></li><li><p>tail -f 文件名**:滚动的查看文件. 查看tomcat的日志(了解)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>tail -f catalina.log</pre><ul><li>ctrl+c 结束查看</li></ul></li></ul><h4><a name='header-c258' class='md-header-anchor '></a>3.文件操作(很重要)</h4><h5><a name='header-c259' class='md-header-anchor '></a>3.1touch创建一个空文件（掌握）</h5><ul><li><p>touch 文件名</p><pre class='md-fences mock-cm' style='display:block;position:relative'>touch a.txt</pre></li></ul><ul><li>练习:在root目录下创建一个test1文件夹，在test1文件夹中创建一个a.txt文件</li></ul><h5><a name='header-c269' class='md-header-anchor '></a>3.2mv(move) 移动文件  (掌握)</h5><ul><li><p>mv 文件 目录:移动到指定目录</p><ul><li><p>练习:在root目录下创建一个test2目录，将test1目录中的a.txt文件移动到test2目录</p><ul><li>mv a.txt test2</li></ul></li></ul></li><li><p>mv 文件 目录/文件名:移动到指定目录且重命名</p><ul><li>练习:在root目录下创建一个test3目录，将test2中的a.txt文件移动到test3目录并重命名为b.txt</li></ul></li><li><p>mv 目录 指定的目录:移动一个目录到指定的目录下</p><ul><li><p>练习:将test2目录移动到test1目录中</p><ul><li>mv test2 test1</li></ul></li></ul></li><li><p>mv 文件名 新文件名:重命名</p><ul><li>练习:将b.txt文件重命名为c.txt</li></ul></li></ul><h5><a name='header-c307' class='md-header-anchor '></a>3.3cp(copy) 拷贝文件</h5><ul><li><p>cp 文件 目录:把一个文件复制到某目录下</p><ul><li>练习:将test3目录中的c.txt文件，拷贝到test1目录</li></ul></li><li><p>cp 文件 目录/文件名:复制且重命名</p><ul><li>练习:将test1中的c.txt文件拷贝到test2目录，并重命名为d.txt</li></ul></li><li><p>cp 文件 新文件名 :当前目录下复制一个</p><ul><li>练习:在test2目录中，复制一个d.txt并命名为dd.txt</li></ul></li><li><p>cp -r 目录 新目录:递归复制目录</p><ul><li>练习:在root目录中创建一个test4目录，并将test3目录及该目录中的所有内容复制到test4中</li></ul></li></ul><h5><a name='header-c338' class='md-header-anchor '></a>3.4rm删除文件(既能删除文件又能删除文件夹)</h5><ul><li><p>rm  文件;	删除文件，有询问是否删除，确定要删除则输入&quot;y&quot;，不想删除则输出&quot;n&quot;然后回车</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rm a.txt  删除a.txt文件</pre><ul><li>练习:删除test3目录中的c.txt文件</li></ul></li><li><p>rm -f 文件;不询问，直接删除</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rm -f a.txt  不询问，直接删除a.txt </pre><ul><li>练习:删除test1文件夹中的c.txt</li></ul></li><li><p>rm -r 目录; 删除目录(递归删除)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rm -r a; 递归删除a目录</pre><ul><li>递归删除test1文件夹以及test1文件夹中的test2文件夹</li></ul></li><li><p>rm -rf 目录; 不询问递归删除（慎用)，也就是直接删除非空目录</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rm -rf  test1  不询问递归删除
+rm -rf *   删除所有文件
+rm -rf /*  自杀	*********(不要用)</pre></li></ul><h4><a name='header-c368' class='md-header-anchor '></a>4.文件编辑(vi或者vim)（重点难点）</h4><h5><a name='header-c369' class='md-header-anchor '></a>4.1vi编辑器</h5><ul><li><p>打开文件：vi file  ,处在普通模式</p></li><li><p>普通模式下，不能编辑文件，要切换到编辑模式才能编辑</p><ul><li><p>按i,可以从普通模式进入编辑模式</p></li><li><p>普通模式常用的快捷键</p><ul><li>yy:复制当前行</li><li>p:粘贴</li><li>dd:删除当前行</li></ul></li></ul></li></ul><ul><li><p>在编辑模式下，只能编辑，不能保存和退出。要切换到&quot;底行模式&quot;才能保存和退出</p><ul><li>1.不能从编辑模式直接进入底行模式，只能从命令模式进入底行模式，所以在编辑模式下要先按&quot;Esc&quot;键进入普通模式。</li><li>2.在普通模式下，按&quot;shift+:&quot;进入底行模式</li></ul></li><li><p>在底行(命令)模式下，有如下命令行</p><ul><li><p>1.wq    保存并退出(一般情况下都是使用这个)</p></li><li><p>2.q        退出(不保存)</p></li><li><p>3.q!       强制退出(出异常了就可以使用强制退出)</p><ul><li>vi的模式</li></ul></li></ul><p>练习:</p><pre class='md-fences mock-cm' style='display:block;position:relative'>在root目录下,创建一个app的目录
+	mkdir app
+在app目录下创建一个a.txt
+	cd app
+	touch a.txt
+编辑a.txt, 内容是: hello world...
+	vi a.txt --打开文件(命令模式)
+	输入:i   -- 切换到编辑模式 
+	Esc     -- 切换到普通模式
+	:       -- 切换到底行模式
+	wq      -- 保存
+复制2行hello world...
+	vi a.txt 
+	yy  复制当前行
+	p    粘贴
+	:    切换到底行模式
+	wq	  保存退出
+再删除最后一行hello world
+	vi a.txt 
+	dd  删除</pre></li></ul><h4><a name='header-c425' class='md-header-anchor '></a>5.打包压缩解压(重要)</h4><p>​	tar命令它能够将用户所指定的文件或目录打包成一个文件，但不做压缩。</p><h5><a name='header-c428' class='md-header-anchor '></a>5.1打包压缩</h5><p>压缩语法：tar    [参数]     打包压缩后的文件名     要打包压缩的文件，支持通配符*号</p><p>将多个文件打包并压缩成一个特定的文件</p><p>参数解释：</p><ol><li>-c  创建新的文件（打包压缩的必选项）</li><li>-x  取出文件中的内容（解包、解压的必选项）</li><li>-f   文件名由命令台设置（打包解包都需要的必选项）</li><li>-v  输出文件清单（可选项）</li><li>-z  自动识别压缩或解压（可选项），要加上z才压缩，不加则不压缩</li></ol><p>命令：</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd /			定位于/目录
+mkdir aaa		创建aaa目录	
+cd    aaa		定位于aaa目录
+touch a.java	创建a.java文件
+touch b.java	创建b.java文件
+touch c.java	创建c.java文件
+tar   -zcvf 	demo.tar.gz   a.java  b.java  c.java
+或
+tar   -zcvf		demo.tar.gz 	 ./*     将当前目录下的所有文件打包压缩成demo.tar.gz文件</pre><p></p><h5><a name='header-c456' class='md-header-anchor '></a>5.2解包解压</h5><p>解压语法：tar   [参数]    压缩文件</p><p>​                   解压后的文件在当前目录中</p><p>解压语法：tar    [参数]    压缩文件   –C/usr/local</p><p>​                   解压后的文件放入/usr/local目录中，注意-C是大写字母C，后面不用接空格符</p><p>将一个特定的文件解包成多个文件，放在指定的目录下</p><p>参数解释：</p><ol><li>-c   创建新的文件（打包压缩的必选项）</li><li>-x   取出文件中的内容（解包解压的必选项）</li><li>-f   文件名由命令台设置（必选项）</li><li>-v   输出文件清单（可选项）</li><li>-z   自动识别压缩或解压（可选项），只有压缩包才能加z</li></ol><p>命令：</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd  /soft					定位于/目录
+rm -rf  ./*.java			强制式删除当前目录下所有扩展名为java的文件
+tar  -xvf  demo.tar.gz	demo.tar.gz这个压缩文件，里面的文件释放到当前目录下
+tar  -xvf  demo.tar.gz -C/usr/local	
+                            demo.tar.gz这个压缩文件，里面的文件释放到/usr/local目录下</pre><p></p><h4><a name='header-c490' class='md-header-anchor '></a>5.系统命令</h4><p>​	<strong>ifconfig:查看当前网卡信息</strong></p><p>​	ping:检查网络是否通畅, ctrl+c:退出</p><p>​	halt:关机(不用)(Linux电脑不用关机)</p><p>​	reboot:重启(一般也不用)</p><p>​	<strong>ps -ef :查看所有进程(很重要)</strong></p><p>​	<strong>|:管道 前面的输出作为后面的输入--------&gt;就是从|之前的命令查询到的结果中筛选出符合|之后的条件的内容</strong></p><p>​	<strong>grep:查找指定的内容,grep -i:忽略大小写</strong></p><p>​	<strong>kill -9 进程号(pid):杀死指定的进程(很重要)</strong>	</p><p>​	eg:</p><pre class='md-fences mock-cm' style='display:block;position:relative'>ps -ef | grep vi:  查看有vi的进程</pre><p><img src='img/tu_7.png' alt='img' /></p><p></p></div>
+</body>
+</html>

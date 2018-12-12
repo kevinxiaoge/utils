@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>day37-Linux.md</title><link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'><style type='text/css'>html, body {overflow-x: initial !important;}html { font-size: 14px; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; line-height: 1.42857; color: rgb(51, 51, 51); overflow-x: hidden; background-color: rgb(255, 255, 255); }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: rgb(181, 214, 252); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export #write { margin: 0px auto; }
+#write > p:first-child, #write > ul:first-child, #write > ol:first-child, #write > pre:first-child, #write > blockquote:first-child, #write > div:first-child, #write > table:first-child { margin-top: 30px; }
+img { max-width: 100%; }
+input, button, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+::before, ::after, * { box-sizing: border-box; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write div, #write pre { width: inherit; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { position: relative; }
+h1 { font-size: 2rem; }
+p { -webkit-margin-before: 1rem; -webkit-margin-after: 1rem; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }
+.mathjax-block { margin-top: 0px; margin-bottom: 0px; -webkit-margin-before: 0rem; -webkit-margin-after: 0rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: bold; font-style: italic; }
+a { cursor: pointer; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; margin: 4px 0px 0px; }
+tr { page-break-inside: avoid; page-break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; page-break-inside: auto; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+pre { white-space: pre-wrap; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences, pre.md-fences { font-size: 0.9rem; display: block; page-break-inside: avoid; text-align: left; overflow: visible; white-space: pre; position: relative !important; background: inherit; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -1.6em; margin-bottom: -1.6em; }
+.md-fences.mock-cm { white-space: pre-wrap; }
+.show-fences-line-number pre.md-fences { padding-left: 0px; }
+.show-fences-line-number pre.md-fences.mock-cm { padding-left: 40px; }
+.footnotes { color: rgb(136, 136, 136); font-size: 0.9rem; padding-top: 1em; padding-bottom: 1em; }
+.footnotes + .footnotes { margin-top: -1em; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: normal; text-align: left; box-sizing: content-box; direction: ltr; background: transparent; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li p, li .mathjax-block { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; }
+@media print { 
+  html, body { height: 100%; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  h1, h2, h3, h4, h5, h6 { page-break-after: avoid; orphans: 2; }
+  p { orphans: 4; }
+  @page { margin: 20mm 0mm; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+#write pre.md-meta-block { font-size: 0.8rem; min-height: 2.86rem; white-space: pre-wrap; display: block; background: rgb(204, 204, 204); }
+p > .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.mathjax-block { white-space: pre; overflow: hidden; width: 100%; }
+p + .mathjax-block { margin-top: -1.143rem; }
+.mathjax-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: none; box-shadow: none; }
+.task-list { list-style-type: none; }
+.task-list-item { position: relative; padding-left: 1em; }
+.task-list-item input { position: absolute; top: 0px; left: 0px; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc::after, .md-toc-content::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: bold; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+.md-toc-h6 { margin-left: 12em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 8em; }
+  .md-toc-h6 { margin-left: 9.5em; }
+}
+a.md-toc-inner { color: inherit; font-size: inherit; font-style: inherit; font-weight: inherit; text-decoration: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+.md-tag { opacity: 0.5; }
+code { text-align: left; }
+h1 .md-tag, h2 .md-tag, h3 .md-tag, h4 .md-tag, h5 .md-tag, h6 .md-tag { font-weight: initial; opacity: 0.35; }
+a.md-header-anchor.md-print-anchor { border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: none !important; text-decoration: initial !important; text-shadow: initial !important; background: transparent !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.mathjax-block .MathJax_SVG_Display { text-align: center; margin: 1em 0em; position: relative; text-indent: 0px; max-width: none; max-height: none; min-width: 0px; min-height: 0px; width: 100%; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: monospace; }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+
+
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: normal; src: local(Open Sans Regular), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: normal; src: local(Open Sans Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400i.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: bold; src: local(Open Sans Bold), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: bold; src: local(Open Sans Bold Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700i.woff) format(woff); }
+html { font-size: 16px; }
+body { font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+#write { max-width: 800px; margin: 0px auto; padding: 20px 30px 40px; }
+#write::after { height: 80px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+body > :first-child { margin-top: 0px !important; }
+body > :last-child { margin-bottom: 0px !important; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; -webkit-font-smoothing: antialiased; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 4px; padding: 0px; margin: 16px 0px; border-width: 0px 0px 1px; border-style: none none solid; overflow: hidden; box-sizing: content-box; border-bottom-color: rgb(221, 221, 221); background-color: rgb(231, 231, 231); }
+body > h2:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child + h2 { margin-top: 0px; padding-top: 0px; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child { margin-top: 0px; padding-top: 0px; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 { margin-top: 0px; padding-top: 0px; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p { margin-top: 0px; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; }
+table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); margin: 0px; padding: 0px; background-color: white; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); }
+pre.md-fences, .md-fences, code, tt { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; background-color: rgb(248, 248, 248); }
+pre.md-fences, .md-fences { margin-bottom: 15px; margin-top: 15px; padding: 8px 1em 6px; }
+.task-list { padding-left: 0px; }
+.task-list-item { padding-left: 32px; }
+.task-list-item input { top: 3px; left: 8px; }
+@media screen and (min-width: 914px) { 
+}
+@media print { 
+  table, pre { page-break-inside: avoid; }
+  pre { word-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; background-color: rgb(247, 247, 247); }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; color: inherit; background-color: rgb(248, 248, 248); }
+.md-tag { color: inherit; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; background-color: rgb(250, 250, 250); }
+
+
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-node'><h1><a name='header-c1' class='md-header-anchor '></a>Linux高级</h1><h1><a name='header-c6' class='md-header-anchor '></a>学习目标</h1><ol><li>能够使用Linux中的crontab命令(完成)</li><li>能够使用Linux中的网络管理命令</li><li>能够使用Linux中SSH免密登录命令</li><li>能够使用Linux中基本用户管理命令(掌握)</li><li>能够使用Linux中防火墙配置命令</li><li>能够在Linux中安装，配置和部署Nginx服务器(完成)</li></ol><h1><a name='header-c26' class='md-header-anchor '></a>第1章 crontab(掌握)</h1><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+
+每隔一分钟，让Linux输出当前的系统时间到/mydate.txt文件中。</pre><h2><a name='header-c28' class='md-header-anchor '></a>1.1 命令功能</h2><p>通过crontab 命令，我们可以在固定的间隔时间执行指定的系统指令。时间间隔的单位可以是分钟、小时、日、月、年及以上的任意组合。这个命令非常适合做周期性的工作，如：数据备份，程序自动运行。</p><h2><a name='header-c31' class='md-header-anchor '></a>1.2 安装crontab</h2><ol><li><p>语法：yum install package  安装指定的安装包</p><p>解释：</p><ol><li>yum（全称为 Yellow dog Updater, Modified）：是一个软件包管理器。能够从指定的服务器自动下载安装包并且安装，可以自动处理依赖性关系，并且一次安装所有依赖的软件包，无须繁琐地一次次下载、安装。yum提供了查找、安装、删除某一个、一组甚至全部软件包的命令，而且命令简洁而又好记。</li><li>package：表示需要指定的安装包或服务</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：yum install crontabs   安装启动定时服务这个安装包</pre><p> <img src='image\36.png' alt='36' /></p></li></ol><h2><a name='header-c48' class='md-header-anchor '></a>1.3 命令格式</h2><ol><li>语法：service crond start      启动定时服务</li><li>语法：service crond stop       停止定时服务</li><li>语法：service crond restart   重新定时服务 </li><li>语法：service crond reload   重新加载定时配置文件</li></ol><p><img src='image\37.png' alt='37' /></p><h2><a name='header-c64' class='md-header-anchor '></a>1.4 调度配置</h2><h3><a name='header-c65' class='md-header-anchor '></a>1.4.1 配置说明</h3><p>语法：crontab  [参数]	</p><p>参数解释：</p><ol><li>-u user    给指定用户设置定时任务，如果不写的话，默认是给当前用户设置定时任务</li><li>-l               显示当前用户所有的定时任务</li><li>-e              编辑当前用户的定时任务，一行一个定时任务</li><li>-r               删除当前用户的定时任务</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：
+crontab -l
+crontab -e</pre><p> <img src='image\38.png' alt='38' /></p><h3><a name='header-c86' class='md-header-anchor '></a>1.4.2 配置示例</h3><p>当输入crontab -e后，会启动vi编辑器，来编写新的定时任务，一行写一个定时任务。</p><p>格式如下：</p><p>分   时    日    月     年    需要执行的命令</p><p> <img src='image\39.png' alt='39' /></p><p>当保存并退出vi编辑器后，定时任务立刻生效。</p><p>等一分钟，显示一下当前用户下的定时任务，和执行的输出内容</p><p><img src='image\40.png' alt='40' /></p><p>其它示例：</p><p>30  21  *   *   *   date  &gt;&gt;   /mydate.txt </p><p>每晚的21:30，将时间输出到/mydate.txt文件中 </p><p>10  10  1,10,20,30   *   *   date   &gt;&gt;   /mydate.txt </p><p>每月1，10，20，30号，的10点10分，将时间输出到/mydate.txt文件中。 </p><h1><a name='header-c111' class='md-header-anchor '></a>第2章 网络管理(了解)</h1><h2><a name='header-c112' class='md-header-anchor '></a>2.1主机名配置</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+
+默认主机名是localhost，我们希望改为有业务含义的主机名，便于将来查询主机名。如：heima，itcast，taotao等主机名。</pre><p>语法1 ：hostname</p><p>获取主机名</p><p>语法2：hostname 新主机名</p><p>修改主机名，但重启后无效</p><p>命令：</p><pre class='md-fences mock-cm' style='display:block;position:relative'>hostname
+hostname zhaojun
+hostname</pre><p> <img src='image\02.png' alt='02' /></p><h2><a name='header-c127' class='md-header-anchor '></a>2.2 ip地址配置(掌握)</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+如果别人想连接到你的机器，就必须得知道你的机器的IP地址。
+
+如果你的机器无IP，就得重新激活网卡，从而产生一个唯一的IP识别这台机器。</pre><ol><li><p>进入CentOS，查看网络配置</p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：ip addr
+或者:ipfconfig</pre><p><img src='image\03.png' alt='03' /></p></li><li><p>进入ifcfg-eth0文件</p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：vi /etc/sysconfig/network-scripts/ifcfg-eth0</pre><p> <img src='image\04.png' alt='04' /></p></li><li><p>配置动态IP</p><p>将ONBOOT=no改为ONBOOT=yes 激活网卡</p><p> <img src='image\05.png' alt='05' /></p></li><li><p>重启网络服务，查看动态IP配置结果</p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：service network restart</pre><p> <img src='image\06.png' alt='06' /></p></li></ol><p>​        这时，再通过命令：ip addr查看虚拟机的IP地址。</p><h2><a name='header-c157' class='md-header-anchor '></a>2.3 域名映射(了解)</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+
+我们希望用户通过域名来访问我们的主机，而不是输入又长又难记的IP地址。
+表面：http://szheima
+本质：http://192.168.11.11
+那么我们就得让szheima域名映射到192.168.11.11这个IP地址。</pre><p>在Linux中，/etc/hosts文件用于在通过主机名进行访问时做IP地址解析之用。</p><p>所以，你想访问一个什么样的主机名，就需要把这个主机名和它对应的IP地址配置在/etc/hosts文件中。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：vi  /etc/hosts</pre><p> <img src='image\07.png' alt='07' /></p><h2><a name='header-c166' class='md-header-anchor '></a>2.4 网络服务管理</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+查看当前网络的状态，并启动和停止网络服务。</pre><h3><a name='header-c168' class='md-header-anchor '></a>2.4.1 后台服务管理命令</h3><pre class='md-fences mock-cm' style='display:block;position:relative'>service network status      查看指定服务的状态
+service network stop        停止指定服务
+service network start       启动指定服务
+service network restart     重启指定服务
+service --status-all        查看系统中所有的后台服务</pre><p><img src='image\08.png' alt='08' /></p><h3><a name='header-c172' class='md-header-anchor '></a>2.4.2 设置后台服务的自启动配置命令(了解)</h3><pre class='md-fences mock-cm' style='display:block;position:relative'>chkconfig   			   查看所有服务的自启配置
+chkconfig iptables off      关掉指定服务的自动启动
+chkconfig iptables on       开启指定服务的自动启动</pre><p>  <img src='image\09.png' alt='09' /></p><h2><a name='header-c176' class='md-header-anchor '></a>2.5 系统中网络进程端口的监听</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+查看当前机器上运行的进程，IP，端口等信息。</pre><p>语法：netstat    [参数]</p><p>显示网络状态</p><p>参数解释：</p><ol><li>-a  显示所有连线中的Socket</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：netstat -a</pre><p> <img src='image\10.png' alt='10' /></p><h1><a name='header-c191' class='md-header-anchor '></a>第3章 SSH免密登录(了解)</h1><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+在企业中，多台Linux机器是可以相互之间进行登录和退出的。
+用Linux自带的SSH客户端命令，可以用输入用户名和密码的方式登录到另一台Linux机器中。
+但每次登录另一台Linux机器都要输入用户名和密码，难免让用户觉得麻烦。那么能不能
+一个用户在不输入用户名和密码的情况下，也能登录另一台Linux机器呢，答案是肯定的，
+这就是SSH免密登录。</pre><h2><a name='header-c193' class='md-header-anchor '></a>3.1 SSH工作机制</h2><p>SSH是Secure Shell（安全外壳协议）的缩写。</p><p>SSH是专为远程登录会话和其他网络服务提供安全性的协议。</p><p>SSH的具体实现是由客户端和服务端的软件组成的：</p><ol><li>服务端是一个守护进程，他在后台运行并响应来自客户端的连接请求。</li><li>客户端可以使用Linux自带的SSH工具，进行远程连接服务端。</li></ol><p>SSH采用二种验证机制：</p><ol><li><p>基于口令的安全验证</p><p>只要你知道另一台机器上用户的帐号和口令，就可以登录到远程主机。</p><p>实战itheima40这台机器有密登录itheima44这台机器</p><p>步骤如下：</p><ol><li><p>机器名：itheima40</p><p>IP是：192.168.92.138</p><p>用户名：root</p><p>密码：123456</p></li><li><p>机器名：itheima44</p><p>IP是：192.168.92.140</p><p>用户名：root</p><p>密码：123456</p><p> <img src='image\46.png' alt='46' /></p></li><li><p>在itheima40这台机器中中输入：ssh 192.168.92.140</p></li><li><p>输入root用户在192.168.92.140这台机器上的密码：123456</p></li><li><p>exit，退出192.168.92.140这台机器，回到itheima401这台机器</p><p><img src='image\42.png' alt='42' /></p></li></ol></li><li><p>基于密钥的安全验证</p><p>你无需知道另一台机器上用户的帐号和口令，也可以登录到远程主机。</p><p>我们说的SSH免密登录，就说的是这种方式。</p><p><img src='image\41.png' alt='41' /></p><p>了解一下工作原理：</p><p>需要依靠密匙，也就是你必须为自己创建一对密匙，并把公用密匙放在需要访问的服务器上。如果你要连接到SSH服务器上，客户端软件就会向服务器发出请求，请求用你的密匙进行安全验证。服务器收到请求之后，先在该服务器上你的主目录下寻找你的公用密匙，然后把它和你发送过来的公用密匙进行比较。如果两个密匙一致，服务器就用公用密匙加密并把它发送给客户端软件。客户端软件收到之后就可以用你的私人密匙解密再把它发送给服务器。</p></li></ol><h2><a name='header-c264' class='md-header-anchor '></a>3.2 免密登录方式配置</h2><p>实战：JavaEE77-01这台机器免密登录JavaEE77-02这台机器</p><p>步骤如下：</p><ol><li><p>机器名：itheima40</p><p>IP是：192.168.92.138</p><p>用户名：root</p><p>密码：123456</p></li><li><p>机器名：itheima44</p><p>IP是：192.168.92.140</p><p>用户名：root</p><p>密码：123456
+ <img src='image\46.png' alt='46' /></p></li><li><p>在itheima40这台机器上输入：ssh-keygen，如有提示，按回车，</p><p>生成itheima40这台机器的公钥和私钥。</p><p><img src='image\43.png' alt='43' /></p></li><li><p>在itheima40这台机器上输入：ssh-copy-id   192.168.92.140，如有提示，按回车，</p><p>将刚刚生成的JavaEE77-01这台机器的公钥和私钥复制到itheima442这台机器的指定目录下。</p><p>这时免密配置成功。</p><p><img src='image\44.png' alt='44' /></p></li><li><p>在JavaEE77-01这台机器上输入：ssh  192.168.92.140，再也不用密码了。</p><p><img src='image\45.png' alt='45' /></p></li></ol><h1><a name='header-c310' class='md-header-anchor '></a>第4章 基本用户管理(掌握)</h1><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+
+创建用户组，创建用户，并分配用户所属的用户组。</pre><h2><a name='header-c312' class='md-header-anchor '></a>4.1 添加用户</h2><p>语法：useradd   -m   -g   组名   新用户名</p><p>语法：passwd   新用户名</p><p>参数解释：</p><ol><li>-m           自动在/home目录了，建立用户家目录，家目录名字就是新用户名</li><li>-g  组名   指定新用户所在的组，如果不带&quot;-g  组名&quot;参数的话，会建立和新用户名同名的组</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：useradd -m itheima</pre><p> <img src='image\16.png' alt='16' /></p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：passwd itheima</pre><p><img src='image\17.png' alt='17' /></p><p>使用SSH Secure客户端工具，用itheima普通用户，12345678密码，登录上Linux。</p><p><img src='image\18.png' alt='18' /></p><h2><a name='header-c336' class='md-header-anchor '></a>4.2 修改用户</h2><p>语法：usermod   -l   新登录名   原登录名</p><p>修改原登录名为新登录名，但所在组名不变</p><p>参数解释：</p><ol><li>-l  修改登录名</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：usermod  -l  tomcat  tom</pre><p><img src='image\19.png' alt='19' /></p><h2><a name='header-c350' class='md-header-anchor '></a>4.3 用户组操作</h2><p>语法：groupadd  组名</p><p>添加一个新组</p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：groupadd america</pre><p> <img src='image\20.png' alt='20' /></p><p> </p><p>语法：usermod   -g    组名   用户</p><p>将用户添加到组中</p><p>参数解释：</p><ol><li>-g  修改用户所属的群组</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：usermod -g america  tom</pre><p> <img src='image\21.png' alt='21' /></p><p>usermod -a -G itheima jay</p><p>语法：gpasswd  -d  用户  组名</p><p>将用户从组中删除</p><p>需要该组不是用户的主组才能删掉</p><p>参数解释：</p><ol><li>-d  从组中删除用户</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：gpasswd -d tom america</pre><p> <img src='image\22.png' alt='22' /></p><p> </p><p>语法：groupmod  -n  新组名  原组名</p><p>将原组名修改为新组名</p><p>参数解释：</p><ol><li>-n  设置使用的组名称</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：groupmod -n usa america</pre><p><img src='image\23.png' alt='23' /></p><h2><a name='header-c405' class='md-header-anchor '></a>4.4 为用户配置sudo权限</h2><p>sudo，可以理解为超级管理员执行的操作，通常是系统级别的指令。</p><p>用root编辑 vi /etc/sudoers
+在文件的如下位置，为hadoop添加一行即可
+root           ALL=(ALL)       ALL  <br/></p><p>itheima    ALL=(ALL)       ALL</p><p>然后，itheima 用户就可以用sudo来执行系统级别的指令。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：sudo useradd  -m  xiangming</pre><p>[itheima@localhost ~]$ sudo useradd  -m  xiangming</p><p></p><p></p><p>chmod命令修改权限</p><p>总共有10位，类似:d rwx r-x ---</p><p>第一位代表的是类型</p><p>三位:超级管理员的权限</p><p>三位:与当前用户同组的用户的权限</p><p>三位:其它用户</p><p>权限包含:读、写、执行</p><p>r:读</p><p>w:写</p><p>x:执行</p><p></p><p>chmod命令怎么使用:chmod命令后面接上3个数字，这三个数字0-7</p><p>0 表示没有权限</p><p>1 执行</p><p>2 写</p><p>3 = 1+2 表示写和执行</p><p>4 读</p><p>5 = 1+4 表示读和执行</p><p>6 = 2+4 表示写和读</p><p>7 = 1+2+4 表示读、写和执行</p><p></p><p>这个sudoers文件只能是root用户具备可读可写可执行的权限,别人也可以读</p><p>744</p><p></p><h1><a name='header-c471' class='md-header-anchor '></a>第5章 防火墙配置(基本上不用管)</h1><pre class='md-fences mock-cm' style='display:block;position:relative'>需求：
+我们查看，启动和停止机器中的防火墙。</pre><p> 	防火墙类似于一个安全卫士管家，它能对你访问它人电脑，它人访问你的电脑，进行拦截并处理，</p><p>有的阻止，有的放行，有的转发。</p><p>​	Linux中防火墙根据配置文件/etc/sysconfig/iptables来控制本机的“出、入”网络访问行为，其对行为的配置策略有四个策略表，如下图：</p><p><img src='image\11.png' alt='11' /></p><p>上述表解释如下，同学们了解一下即可：</p><ol><li><p>raw表</p><p>主要用于决定数据包是否被状态跟踪机制处理。在匹配数据包时，raw表的规则要优先于其他表。</p></li><li><p>mangle表</p><p>主要用于修改数据包的TOS（Type Of Service，服务类型）、TTL（Time To Live，生存周期）指以	    				及为数据包设置Mark标记，以实现Qos(Quality Of Service，服务质量)调整以及策略路由等应用，由于需要相应的路由设备支持，因此应用并不广泛。</p></li><li><p>nat表</p><p>主要用于修改数据包的IP地址、端口号等信息（网络地址转换，如SNAT、DNAT、MASQUERADE、REDIRECT）。属于一个流的包 (因为包的大小限制导致数据可能会被分成多个数据包)只会经过这个表一次。如果第一个包被允许做NAT或Masqueraded，那么余下的包都会自动地 被做相同的操作，也就是说，余下的包不会再通过这个表。</p></li><li><p>filter表</p><p>主要用于对数据包进行过滤，根据具体的规则决定是否放行该数据包（如DROP、ACCEPT、REJECT、LOG）。filter 表对应的内核模块为iptable_filter，包含三个规则链：</p></li></ol><ul><li>INPUT链：INPUT针对那些目的地是本地的包</li><li>FORWARD链：FORWARD过滤所有不是本地产生的并且目的地不是本地(即本机只是负责转发)的包</li><li>OUTPUT链：OUTPUT是用来过滤所有本地生成的包</li></ul><h2><a name='header-c514' class='md-header-anchor '></a>5.1 查看防火墙状态</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：service iptables status</pre><p> <img src='image\12.png' alt='12' /></p><h2><a name='header-c518' class='md-header-anchor '></a>5.2 关闭防火墙(千万不要做)</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：service iptables stop</pre><p> <img src='image\13.png' alt='13' /></p><h2><a name='header-c522' class='md-header-anchor '></a>5.3 启动防火墙</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：service iptables start</pre><h2><a name='header-c524' class='md-header-anchor '></a>5.4 重启防火墙</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>service iptables restart</pre><p></p><h2><a name='header-c528' class='md-header-anchor '></a>5.5 禁止防火墙自启(不要去操作)</h2><pre class='md-fences mock-cm' style='display:block;position:relative'>命令：chkconfig iptables off</pre><p> <img src='image\15.png' alt='15' /></p><h1><a name='header-c532' class='md-header-anchor '></a>第6章 web的通讯原理</h1><p>​	学习Java开发Web应用之前，首先我们得对日常生活中，用浏览器访问服务器之间的HTTP通信过程要了解一下，基本内容如下：</p><p> <img src='image\24.png' alt='24' /></p><ol><li>建立Web浏览器与Web服务器的TCP连接</li><li>Web浏览器向Web服务器发送请求命令</li><li>Web浏览器发送请求头信息</li><li>Web服务器应答</li><li>Web服务器发送应答头信息</li><li>Web服务器向浏览器发送数据</li><li>Web服务器关闭TCP连接</li></ol><h1><a name='header-c559' class='md-header-anchor '></a>第7章 Nginx(比较重要)</h1><h2><a name='header-c560' class='md-header-anchor '></a>7.1 Nginx的概念</h2><p>Nginx是一种服务器软件，其最主要，最基本的功能是可以与服务器硬件结合，让程序员可以将程序发布在Nginx服务器上，让成千上万的用户可以浏览。</p><p>除此之外，Nginx还是一种高性能的HTTP和反向代理服务器，同时也是一个代理邮件服务器。也就是说，我们在Nginx上可以：</p><ol><li>可以发布网站</li><li>可以实现负载均衡</li><li>可以作为邮件服务器实现收发邮件等功能</li></ol><p>所谓的负载均衡是指，当同时有多个用户访问我们的服务器的时候，为了减少服务器的压力，我们需要将用户引入服务器集群中的较轻压力的服务器，分担较重压力服务器的负担。</p><p> <img src='image\25.png' alt='25' /></p><h2><a name='header-c579' class='md-header-anchor '></a>7.2 Linux安装Nginx</h2><h3><a name='header-c580' class='md-header-anchor '></a>7.2.1下载Nginx</h3><p>进入<a href='http://nginx.org/' target='_blank' >http://nginx.org/</a>网站，下载nginx-1.13.9.tar.gz文件。</p><p><img src='image\49.png' alt='49' /></p><h3><a name='header-c585' class='md-header-anchor '></a>7.2.2上传Nginx到Linux的root目录下</h3><p>用Windows版本的SSH客户端工具，将刚下载好的nginx-1.13.9.tar.gz文件上传到root目录下。</p><p><img src='image\50.png' alt='50' /></p><p> <img src='image\51.png' alt='51' /></p><h3><a name='header-c592' class='md-header-anchor '></a>7.2.3安装Gcc</h3><p>Nginx是C语言开发，建议在Linux上运行，安装Nginx需要先将官网下载的源码进行编译，编译依赖gcc环境；所以需要安装gcc。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>安装gcc，期间有提示，一律选y
+yum install gcc-c++</pre><p> <img src='image\52.png' alt='52' /></p><h3><a name='header-c598' class='md-header-anchor '></a>7.2.4安装Nginx</h3><pre class='md-fences mock-cm' style='display:block;position:relative'>安装Nginx依赖环境，-y表示所有提示默认选择y
+yum -y install pcre pcre-devel  
+yum -y install zlib zlib-devel  
+yum -y install openssl openssl-devel
+
+解压，并进入解压文件夹
+tar -xvf nginx-1.13.9.tar.gz -C/usr/local
+cd /usr/local/nginx-1.13.9
+
+编译并安装
+./configure
+make
+make install</pre><p> <img src='image\53.png' alt='' /></p><p> <img src='image\54.png' alt='54' /></p><p> <img src='image\55.png' alt='55' /></p><h3><a name='header-c606' class='md-header-anchor '></a>7.2.5启动Nginx</h3><pre class='md-fences mock-cm' style='display:block;position:relative'>进入nginx的sbin目录
+cd /usr/local/nginx/sbin
+
+在sbin目录下启动
+./nginx
+
+在sbin目录下停止
+./nginx -s stop
+
+在sbin目录下重写加载
+./nginx -s reload
+
+开放linux的对外访问的端口80，在默认情况下，Linux不会开发端口号
+/sbin/iptables -I INPUT -p tcp --dport 80 -j ACCEPT(不推荐使用)
+修改/etc/sysconfig/iptables文件(推荐使用)，修改之后要重新启动防火墙service iptables reload
+
+查看是否有nginx的进程是否存在
+ps -ef | grep nginx</pre><p> <img src='image\56.png' alt='56' /></p><h3><a name='header-c610' class='md-header-anchor '></a>7.2.6用浏览器访问Nginx</h3><p>打开Windows平台中的浏览器，输入：<a href='http://192.168.0.106:80' target='_blank' >http://192.168.0.106:80</a>回车，即可看到Nginx服务器软件的启动界面。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>http://192.168.0.106:80</pre><p><img src='image\57.png' alt='57' /></p><h2><a name='header-c616' class='md-header-anchor '></a>7.3 部署</h2><h3><a name='header-c617' class='md-header-anchor '></a>7.3.1 修改配置文件</h3><pre class='md-fences mock-cm' style='display:block;position:relative'>打开/usr/local/nginx/conf/nginx.conf文件，修改server段的内容：
+server {
+        listen       80;
+        server_name  localhost;
+        location / {
+            root   /ly;
+            index  index.html index.htm;
+        }
+    }
+核心解释如下：
+Nginx服务器监听localhost:80的请求，
+
+root表示项目的根目录，这里指向/ly目录
+index表示项目中的默认首页是index.html或者是index.htm，Nginx自动访问默认首页</pre><p> <img src='image\60.png' alt='60' /></p><p> <img src='image\59.png' alt='59' /></p><h3><a name='header-c623' class='md-header-anchor '></a>7.3.2 启动Nginx</h3><pre class='md-fences mock-cm' style='display:block;position:relative'>停止Nginx
+./nginx -s stop
+
+启劝Nginx
+./nginx</pre><p> <img src='image\58.png' alt='58' /></p><h3><a name='header-c627' class='md-header-anchor '></a>7.3.3 部署项目</h3><p>打开Windows中的浏览器，输入如下地址访问web应用</p><pre class='md-fences mock-cm' style='display:block;position:relative'>http://192.168.0.106/</pre><p> <img src='image\61.png' alt='61' /></p><p></p><h1><a name='header-c636' class='md-header-anchor '></a> </h1><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p><p></p></div>
+</body>
+</html>

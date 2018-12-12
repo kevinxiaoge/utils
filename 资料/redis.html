@@ -1,0 +1,344 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>redis.md</title><link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'><style type='text/css'>html, body {overflow-x: initial !important;}.CodeMirror { height: auto; }
+.CodeMirror-scroll { overflow-y: hidden; overflow-x: auto; }
+.CodeMirror-lines { padding: 4px 0px; }
+.CodeMirror pre { }
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { background-color: white; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); white-space: nowrap; background-color: rgb(247, 247, 247); }
+.CodeMirror-linenumbers { }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.CodeMirror div.CodeMirror-cursor { border-left-width: 1px; border-left-style: solid; border-left-color: black; z-index: 3; }
+.CodeMirror div.CodeMirror-secondarycursor { border-left-width: 1px; border-left-style: solid; border-left-color: silver; }
+.CodeMirror.cm-keymap-fat-cursor div.CodeMirror-cursor { width: auto; border: 0px; z-index: 1; background: rgb(119, 238, 119); }
+.CodeMirror div.CodeMirror-cursor.CodeMirror-overwrite { }
+.cm-tab { display: inline-block; }
+.cm-s-typora-default .cm-header, .cm-s-typora-default .cm-property { color: rgb(217, 79, 138); }
+.cm-s-typora-default pre.cm-header1:not(.cm-atom) :not(.cm-overlay) { font-size: 2rem; line-height: 2rem; }
+.cm-s-typora-default pre.cm-header2:not(.cm-atom) :not(.cm-overlay) { font-size: 1.4rem; line-height: 1.4rem; }
+.cm-s-typora-default .cm-atom, .cm-s-typora-default .cm-number { color: rgb(149, 132, 134); }
+.cm-s-typora-default .cm-table-row, .cm-s-typora-default .cm-block-start { font-family: monospace; }
+.cm-s-typora-default .cm-comment { color: rgb(74, 90, 159); font-family: monospace; }
+.cm-s-typora-default .cm-tag { color: rgb(169, 68, 66); }
+.cm-s-typora-default .cm-string { color: rgb(126, 134, 169); }
+.cm-s-typora-default .cm-link { color: rgb(196, 122, 15); text-decoration: underline; }
+.cm-s-typora-default .cm-variable-2, .cm-s-typora-default .cm-variable-1 { color: inherit; }
+.cm-s-typora-default .cm-overlay { font-size: 1rem; font-family: monospace; }
+.CodeMirror.cm-s-typora-default div.CodeMirror-cursor { border-left-width: 3px; border-left-style: solid; border-left-color: rgb(228, 98, 154); }
+.cm-s-typora-default .CodeMirror-activeline-background { left: -60px; right: -30px; background: rgba(204, 204, 204, 0.2); }
+.cm-s-typora-default .CodeMirror-gutters { border-right-style: none; background-color: inherit; }
+.cm-s-typora-default .cm-trailing-space-new-line::after, .cm-startspace::after, .cm-starttab .cm-tab::after { content: "•"; position: absolute; left: 0px; opacity: 0; font-family: LetterGothicStd, monospace; }
+.os-windows .cm-startspace::after, .os-windows .cm-starttab .cm-tab::after { left: -0.1em; }
+.cm-starttab .cm-tab::after { content: " "; }
+.cm-startspace, .cm-tab, .cm-starttab, .cm-trailing-space-a, .cm-trailing-space-b, .cm-trailing-space-new-line { font-family: monospace; position: relative; }
+.cm-s-typora-default .cm-trailing-space-new-line::after { content: "↓"; opacity: 0.3; }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: black; }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-property { color: black; }
+.cm-s-inner .cm-operator { color: black; }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: blue; }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: bold; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: rgb(255, 0, 0); }
+.cm-invalidchar { color: rgb(255, 0, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.CodeMirror-activeline-background { background: rgb(232, 242, 255); }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { margin-bottom: -30px; margin-right: -30px; padding-bottom: 30px; padding-right: 30px; height: 100%; outline: none; position: relative; box-sizing: content-box; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow-x: hidden; overflow-y: scroll; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow-y: hidden; overflow-x: scroll; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; word-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; background: transparent; }
+.CodeMirror-wrap pre { word-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right-width: 30px; border-right-style: solid; border-right-color: transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right-style: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-widget { }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right-style: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.CodeMirror-selected { background: rgb(217, 217, 217); }
+.CodeMirror-focused .CodeMirror-selected { background: rgb(215, 212, 240); }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+.CodeMirror span { }
+@media print { 
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+html { font-size: 14px; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; line-height: 1.42857; color: rgb(51, 51, 51); overflow-x: hidden; background-color: rgb(255, 255, 255); }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: rgb(181, 214, 252); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export #write { margin: 0px auto; }
+#write > p:first-child, #write > ul:first-child, #write > ol:first-child, #write > pre:first-child, #write > blockquote:first-child, #write > div:first-child, #write > table:first-child { margin-top: 30px; }
+img { max-width: 100%; }
+input, button, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+::before, ::after, * { box-sizing: border-box; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write div, #write pre { width: inherit; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { position: relative; }
+h1 { font-size: 2rem; }
+p { -webkit-margin-before: 1rem; -webkit-margin-after: 1rem; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }
+.mathjax-block { margin-top: 0px; margin-bottom: 0px; -webkit-margin-before: 0rem; -webkit-margin-after: 0rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: bold; font-style: italic; }
+a { cursor: pointer; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; margin: 4px 0px 0px; }
+tr { page-break-inside: avoid; page-break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; page-break-inside: auto; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+pre { white-space: pre-wrap; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences, pre.md-fences { font-size: 0.9rem; display: block; page-break-inside: avoid; text-align: left; overflow: visible; white-space: pre; position: relative !important; background: inherit; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -1.6em; margin-bottom: -1.6em; }
+.md-fences.mock-cm { white-space: pre-wrap; }
+.show-fences-line-number pre.md-fences { padding-left: 0px; }
+.show-fences-line-number pre.md-fences.mock-cm { padding-left: 40px; }
+.footnotes { color: rgb(136, 136, 136); font-size: 0.9rem; padding-top: 1em; padding-bottom: 1em; }
+.footnotes + .footnotes { margin-top: -1em; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: normal; text-align: left; box-sizing: content-box; direction: ltr; background: transparent; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li p, li .mathjax-block { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; }
+@media print { 
+  html, body { height: 100%; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  h1, h2, h3, h4, h5, h6 { page-break-after: avoid; orphans: 2; }
+  p { orphans: 4; }
+  @page { margin: 20mm 0mm; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+#write pre.md-meta-block { font-size: 0.8rem; min-height: 2.86rem; white-space: pre-wrap; display: block; background: rgb(204, 204, 204); }
+p > .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.mathjax-block { white-space: pre; overflow: hidden; width: 100%; }
+p + .mathjax-block { margin-top: -1.143rem; }
+.mathjax-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: none; box-shadow: none; }
+.task-list { list-style-type: none; }
+.task-list-item { position: relative; padding-left: 1em; }
+.task-list-item input { position: absolute; top: 0px; left: 0px; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc::after, .md-toc-content::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: bold; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+.md-toc-h6 { margin-left: 12em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 8em; }
+  .md-toc-h6 { margin-left: 9.5em; }
+}
+a.md-toc-inner { color: inherit; font-size: inherit; font-style: inherit; font-weight: inherit; text-decoration: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+.md-tag { opacity: 0.5; }
+code { text-align: left; }
+h1 .md-tag, h2 .md-tag, h3 .md-tag, h4 .md-tag, h5 .md-tag, h6 .md-tag { font-weight: initial; opacity: 0.35; }
+a.md-header-anchor.md-print-anchor { border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: none !important; text-decoration: initial !important; text-shadow: initial !important; background: transparent !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.mathjax-block .MathJax_SVG_Display { text-align: center; margin: 1em 0em; position: relative; text-indent: 0px; max-width: none; max-height: none; min-width: 0px; min-height: 0px; width: 100%; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: monospace; }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+
+
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: normal; src: local(Open Sans Regular), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: normal; src: local(Open Sans Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400i.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: bold; src: local(Open Sans Bold), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: bold; src: local(Open Sans Bold Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700i.woff) format(woff); }
+html { font-size: 16px; }
+body { font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+#write { max-width: 800px; margin: 0px auto; padding: 20px 30px 40px; }
+#write::after { height: 80px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+body > :first-child { margin-top: 0px !important; }
+body > :last-child { margin-bottom: 0px !important; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; -webkit-font-smoothing: antialiased; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 4px; padding: 0px; margin: 16px 0px; border-width: 0px 0px 1px; border-style: none none solid; overflow: hidden; box-sizing: content-box; border-bottom-color: rgb(221, 221, 221); background-color: rgb(231, 231, 231); }
+body > h2:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child + h2 { margin-top: 0px; padding-top: 0px; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child { margin-top: 0px; padding-top: 0px; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 { margin-top: 0px; padding-top: 0px; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p { margin-top: 0px; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; }
+table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); margin: 0px; padding: 0px; background-color: white; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); }
+pre.md-fences, .md-fences, code, tt { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; background-color: rgb(248, 248, 248); }
+pre.md-fences, .md-fences { margin-bottom: 15px; margin-top: 15px; padding: 8px 1em 6px; }
+.task-list { padding-left: 0px; }
+.task-list-item { padding-left: 32px; }
+.task-list-item input { top: 3px; left: 8px; }
+@media screen and (min-width: 914px) { 
+}
+@media print { 
+  table, pre { page-break-inside: avoid; }
+  pre { word-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; background-color: rgb(247, 247, 247); }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; color: inherit; background-color: rgb(248, 248, 248); }
+.md-tag { color: inherit; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; background-color: rgb(250, 250, 250); }
+
+
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-node'><h1><a name='header-c1' class='md-header-anchor '></a>NOSQL数据库-Redis</h1><h2><a name='header-c6' class='md-header-anchor '></a>学习目标：</h2><ol><li>能够理解nosql的概念(了解)</li><li>能够说出redis的常用数据类型(了解)</li><li>能够使用redis的string操作命令(掌握)</li><li>能够使用redis的hash操作命令(掌握)</li><li>能够使用redis的list操作命令(了解)</li><li>能够使用redis的set操作命令(了解)</li><li>能够说出redis的两种持久化机制(了解)</li><li>能够使用jedis对redis进行操作(重点掌握)</li></ol><h1><a name='header-c32' class='md-header-anchor '></a>第1章 NOSQL概述</h1><h2><a name='header-c33' class='md-header-anchor '></a>1.1 什么是NOSQL</h2><p>NoSQL(NoSQL = Not Only SQL)，意即“不仅仅是SQL”，是一项全新的数据库理念，泛指非关系型的数据库。</p><h2><a name='header-c36' class='md-header-anchor '></a>1.2 为什么需要NOSQL</h2><p>随着互联网的高速崛起，网站的用户群的增加，访问量的上升，传统数据库上都开始出现了性能瓶颈，web程序不再仅仅专注在功能上，同时也在追求性能。所以NOSQL数据库应运而上，具体表现为对如下三高问题的解决：</p><ul><li><p>High performance - 对数据库高并发读写的需求 </p><p>web2.0网站要根据用户个性化信息来实时生成动态页面和提供动态信息，所以基本上无法使用动态页面静态化技术，因此数据库并发负载非常高，往往要达到每秒上万次读写请求。关系数据库应付上万次SQL查询还勉强顶得住，但是应付上万次SQL写数据请求，硬盘IO就已经无法承受了。其实对于普通的BBS网站，往往也存在对高并发写请求的需求，例如网站的实时统计在线用户状态，记录热门帖子的点击次数，投票计数等，因此这是一个相当普遍的需求。</p></li><li><p>Huge Storage - 对海量数据的高效率存储和访问的需求 </p><p>类似Facebook，twitter，Friendfeed这样的SNS网站，每天用户产生海量的用户动态，以Friendfeed为例，一个月就达到了2.5亿条用户动态，对于关系数据库来说，在一张2.5亿条记录的表里面进行SQL查询，效率是极其低下乃至不可忍受的。再例如大型web网站的用户登录系统，例如腾讯，盛大，动辄数以亿计的帐号，关系数据库也很难应付。 </p></li><li><p>High Scalability &amp;&amp; High Availability- 对数据库的高可扩展性和高可用性的需求 </p><p>在基于web的架构当中，数据库是最难进行横向扩展的，当一个应用系统的用户量和访问量与日俱增的时候，你的数据库却没有办法像web server和app server那样简单的通过添加更多的硬件和服务节点来扩展性能和负载能力。对于很多需要提供24小时不间断服务的网站来说，对数据库系统进行升级和扩展是非常痛苦的事情，往往需要停机维护和数据迁移，为什么数据库不能通过不断的添加服务器节点来实现扩展呢？</p></li></ul><h2><a name='header-c55' class='md-header-anchor '></a>1.3 主流的NOSQL产品</h2><p><img src='image\1.png' alt='' /></p><ul><li><p>键值(Key-Value)存储数据库</p><p>相关产品： Tokyo Cabinet/Tyrant、Redis、Voldemort、Berkeley DB</p><p>典型应用： 内容缓存，主要用于处理大量数据的高访问负载。 </p><p>数据模型： 一系列键值对</p><p>优势： 快速查询</p><p>劣势： 存储的数据缺少结构化</p></li><li><p>列存储数据库</p><p>相关产品：Cassandra, HBase, Riak</p><p>典型应用：分布式的文件系统</p><p>数据模型：以列簇式存储，将同一列数据存在一起</p><p>优势：查找速度快，可扩展性强，更容易进行分布式扩展</p><p>劣势：功能相对局限</p></li><li><p>文档型数据库</p><p>相关产品：CouchDB、MongoDB</p><p>典型应用：Web应用（与Key-Value类似，Value是结构化的）</p><p>数据模型： 一系列键值对</p><p>优势：数据结构要求不严格</p><p>劣势： 查询性能不高，而且缺乏统一的查询语法</p></li><li><p>图形(Graph)数据库</p><p>相关数据库：Neo4J、InfoGrid、Infinite Graph</p><p>典型应用：社交网络</p><p>数据模型：图结构</p><p>优势：利用图结构相关算法。</p><p>劣势：需要对整个图做计算才能得出结果，不容易做分布式的集群方案。</p></li></ul><h2><a name='header-c111' class='md-header-anchor '></a>1.4 NOSQL的特点</h2><p>在大数据存取上具备关系型数据库无法比拟的性能优势，例如：</p><ul><li><p>易扩展</p><p>NoSQL数据库种类繁多，但是一个共同的特点都是去掉关系数据库的关系型特性。数据之间无关系，这样就非常容易扩展。也无形之间，在架构的层面上带来了可扩展的能力。</p></li></ul><ul><li><p>大数据量，高性能</p><p>NoSQL数据库都具有非常高的读写性能，尤其在大数据量下，同样表现优秀。这得益于它的无关系性，数据库的结构简单。</p></li></ul><ul><li><p>灵活的数据模型</p><p>NoSQL无需事先为要存储的数据建立字段，随时可以存储自定义的数据格式。而在关系数据库里，增删字段是一件非常麻烦的事情。如果是非常大数据量的表，增加字段简直就是一个噩梦。这点在大数据量的Web2.0时代尤其明显。</p></li></ul><ul><li><p>高可用</p><p>NoSQL在不太影响性能的情况，就可以方便的实现高可用的架构。比如Cassandra，HBase模型，通过复制模型也能实现高可用。</p></li></ul><h1><a name='header-c138' class='md-header-anchor '></a>第2章 Redis概述</h1><h2><a name='header-c139' class='md-header-anchor '></a>2.1 什么是Redis</h2><p>Redis是用C语言开发的一个开源的高性能键值对（key-value）数据库，官方提供测试数据，50个并发执行100000个请求,读的速度是110000次/s,写的速度是81000次/s ，且Redis通过提供多种键值数据类型来适应不同场景下的存储需求，目前为止Redis支持的键值数据类型如下：</p><ul><li>字符串类型 string(掌握)</li><li>散列类型 hash</li><li>列表类型 list</li><li>集合类型 set</li><li>有序集合类型 sortedset</li></ul><h2><a name='header-c158' class='md-header-anchor '></a>2.2 redis的应用场景</h2><ul><li>缓存（数据查询、短连接、新闻内容、商品内容等等）</li><li>聊天室的在线好友列表</li><li>任务队列。（秒杀、抢购、12306等等）</li><li>应用排行榜</li><li>网站访问统计</li><li>数据过期处理（可以精确到毫秒）</li><li>分布式集群架构中的session分离</li></ul><h1><a name='header-c181' class='md-header-anchor '></a>第3章 window版Redis的安装与使用</h1><h2><a name='header-c182' class='md-header-anchor '></a>3.1 windows版Redis的下载</h2><p>官方提倡使用Linux版的Redis，所以官网值提供了Linux版的Redis下载，我们可以从GitHub上下载window版的Redis，具体链接地址如下：</p><ul><li>官网下载地址：<a href='http://redis.io/download' target='_blank' >http://redis.io/download</a></li></ul><ul><li>github下载地址：<a href='https://github.com/MSOpenTech/redis/tags' target='_blank' >https://github.com/MSOpenTech/redis/tags</a></li></ul><p><img src='image\8.png' alt='8' /></p><p>在今天的课程资料中提供的下载完毕的window版本的Redis：</p><p>​	</p><p><img src='image\2.png' alt='' /></p><h2><a name='header-c201' class='md-header-anchor '></a>3.2 window版Redis的目录结构</h2><p>解压Redis压缩包后，见到如下目录机构：</p><table><thead><tr><th>目录或文件</th><th>作用</th></tr></thead><tbody><tr><td>redis-benchmark</td><td>性能测试工具</td></tr><tr><td>redis-check-aof</td><td>AOF文件修复工具</td></tr><tr><td>redis-check-dump</td><td>RDB文件检查工具（快照持久化文件）</td></tr><tr><td>redis-cli</td><td>命令行客户端</td></tr><tr><td>redis-server</td><td>redis服务器启动命令</td></tr><tr><td>redis.windows.conf</td><td>redis核心配置文件</td></tr></tbody></table><h2><a name='header-c226' class='md-header-anchor '></a>3.3 window版Redis的安装与启动</h2><h3><a name='header-c227' class='md-header-anchor '></a>3.3.1 window版Redis的安装</h3><p>window版的安装及其简单，解压Redis压缩包完成即安装完毕</p><h3><a name='header-c230' class='md-header-anchor '></a>3.3.2 window版Redis的启动与关闭</h3><p>双击Redis目录中redis-server.exe可以启动redis服务，Redis服务占用的端口是6379</p><p><img src='image\3.png' alt='' /></p><p>关闭Redis的控制台窗口就可以关闭Redis服务</p><h2><a name='header-c237' class='md-header-anchor '></a>3.4 window版Redis的使用</h2><p>双击Redis目录中redis-cli.exe可以启动redis客户端</p><p><img src='image\4.png' alt='' /></p><h1><a name='header-c242' class='md-header-anchor '></a>第4章 Redis的数据类型</h1><h2><a name='header-c243' class='md-header-anchor '></a>4.1 Redis的5种数据类型</h2><p>redis是一种高级的key-value的存储系统，其中value支持五种数据类型：</p><ul><li>字符串（String）(必须要掌握)</li><li>哈希（hash）</li><li>字符串列表（list）</li><li>字符串集合（set）</li><li>有序字符串集合（sorted set）</li></ul><p>关于key的定义，注意如下几点：</p><ul><li>key不要太长，最好不要超过1024个字节，这不仅会消耗内存还会降低查找效率</li><li>key不要太短，如果太短会降低key的可读性 </li><li>在项目中，key最好有一个统一的命名规范:&quot;项目名_模块名_功能名&quot;</li></ul><h2><a name='header-c274' class='md-header-anchor '></a>4.2 字符串类型string</h2><h3><a name='header-c275' class='md-header-anchor '></a>4.2.1 字符串类型string概述</h3><p>字符串类型是Redis中最为基础的数据存储类型，它在Redis中是二进制安全的，这便意味着该类型存入和获取的数据相同。在Redis中字符串类型的Value最多可以容纳的数据长度是512M。</p><h3><a name='header-c278' class='md-header-anchor '></a>4.2.2 字符串类型string常用命令</h3><ul><li><p><strong>set key value</strong></p><p>设定key持有指定的字符串value，如果该key存在则进行覆盖操作。总是返回”OK”</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; set company &quot;itcast&quot;
+OK
+127.0.0.1:6379&gt;</pre></li></ul><ul><li><p><strong>get key</strong></p><p>获取key的value。如果与该key关联的value不是String类型，redis将返回错误信息，因为get命令只能用于获取String value；如果该key不存在，返回(nil)。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; set name &quot;itcast&quot;
+OK
+127.0.0.1:6379&gt; get name
+&quot;itcast&quot;</pre></li><li><p><strong>del key</strong></p><p>删除指定key</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; del name
+(integer) 1
+127.0.0.1:6379&gt; get name
+(nil)</pre><p>​</p></li></ul><h2><a name='header-c301' class='md-header-anchor '></a>4.3 哈希类型hash</h2><p>Object的toString()方法:类的全限定名@散列码</p><h3><a name='header-c304' class='md-header-anchor '></a>4.3.1 哈希类型hash概述</h3><p>Redis中的Hash类型可以看成具有String Key和String Value的map容器。所以该类型非常适合于存储值对象的信息。如Username、Password和Age等。如果Hash中包含很少的字段，那么该类型的数据也将仅占用很少的磁盘空间。每一个Hash可以存储4294967295个键值对。</p><h3><a name='header-c307' class='md-header-anchor '></a>4.3.2 哈希类型hash常用命令</h3><ul><li><p><strong>hset key field value</strong></p><p>为指定的key设定field/value对（键值对）。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; hset myhash username haohao
+(integer) 1
+127.0.0.1:6379&gt;</pre></li></ul><ul><li><p><strong>hget key field</strong></p><p>返回指定的key中的field的值</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; hset myhash username haohao
+(integer) 1
+127.0.0.1:6379&gt; hget myhash username
+&quot;haohao&quot;</pre></li></ul><ul><li><p>如果想要一次性设置或者获取多个字段，则使用hmset 或者 hmget</p></li><li><p>hdel key field [field … ]** </p><p>可以删除一个或多个字段，返回值是被删除的字段个数</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; hdel myhash username
+(integer) 1
+127.0.0.1:6379&gt; hget myhash username
+(nil)
+127.0.0.1:6379&gt;</pre><p>​</p></li></ul><h2><a name='header-c334' class='md-header-anchor '></a>4.4 列表类型list</h2><h3><a name='header-c335' class='md-header-anchor '></a>4.4.1 列表类型list概述</h3><p>在Redis中，List类型是按照插入顺序排序的字符串链表。和数据结构中的普通链表一样，我们可以在其头部(left)和尾部(right)添加新的元素。在插入时，如果该键并不存在，Redis将为该键创建一个新的链表。与此相反，如果链表中所有的元素均被移除，那么该键也将会被从数据库中删除。List中可以包含的最大元素数量是4294967295</p><h3><a name='header-c338' class='md-header-anchor '></a>4.4.2 列表类型list</h3><ul><li><p><strong>lpush key values[value1 value2…]</strong></p><p>在指定的key所关联的list的头部插入所有的values，如果该key不存在，该命令在插入的之前创建一个与该key关联的空链表，之后再向该链表的头部插入数据。插入成功，返回元素的个数。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; lpush mylist a b c
+(integer) 3
+127.0.0.1:6379&gt;</pre></li></ul><ul><li><p><strong>rpush key values[value1 value2…]</strong></p></li><li><p><strong>lpop key</strong></p><p>返回并弹出指定的key关联的链表中的第一个元素，即头部元素。如果该key不存在，返回nil；若key存在，则返回链表的头部元素。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; lpush mylist a b c
+(integer) 3
+127.0.0.1:6379&gt; lpop mylist
+&quot;c&quot;
+127.0.0.1:6379&gt; lpop mylist
+&quot;b&quot;</pre></li><li><p><strong>rpop key</strong></p><p>从尾部弹出元素。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; lpush mylist a b c
+(integer) 3
+127.0.0.1:6379&gt; rpop mylist
+&quot;a&quot;</pre><p>​</p></li></ul><h2><a name='header-c364' class='md-header-anchor '></a>4.5 集合类型set</h2><h3><a name='header-c365' class='md-header-anchor '></a>4.5.1 集合类型set</h3><p>在Redis中，我们可以将Set类型看作为没有排序的字符集合，和List类型一样，我们也可以在该类型的数据值上执行添加、删除或判断某一元素是否存在等操作。需要说明的是，这些操作的时间复杂度为O(1)，即常量时间内完成次操作。Set可包含的最大元素数量是4294967295，和List类型不同的是，Set集合中不允许出现重复的元素。</p><h3><a name='header-c368' class='md-header-anchor '></a>4.5.2 集合类型set的常用命令</h3><ul><li><p><strong>sadd key values[value1、value2…]</strong></p><p>向set中添加数据，如果该key的值已有则不会重复添加</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; sadd myset a b c
+(integer) 3</pre></li><li><p><strong>smembers key</strong></p><p>获取set中所有的成员</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; sadd myset a b c
+(integer) 3
+127.0.0.1:6379&gt; smembers myset
+1) &quot;c&quot;
+2) &quot;a&quot;
+3) &quot;b&quot;</pre></li><li><p><strong>srem key members[member1、member2…]</strong></p><p>删除set中指定的成员</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; srem myset a b
+(integer) 2
+127.0.0.1:6379&gt; smembers myset
+1) &quot;c&quot;
+127.0.0.1:6379&gt;</pre><p>​</p></li></ul><h1><a name='header-c390' class='md-header-anchor '></a>第5章 Redis的通用命令</h1><ul><li><p><strong>keys *</strong></p><p>获取所有与pattern匹配的key，返回所有与该key匹配的keys。*表示任意一个或多个字符，?表示任意一个字符</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; keys *
+1) &quot;company&quot;
+2) &quot;mylist&quot;
+3) &quot;myhash&quot;
+4) &quot;myset&quot;</pre></li><li><p><strong>del key1 key2…</strong></p><p>删除指定的key</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; del company
+(integer) 1</pre></li><li><p><strong>exists key</strong></p><p>判断该key是否存在，1代表存在，0代表不存在</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; exists compnay
+(integer) 0
+127.0.0.1:6379&gt; exists mylist
+(integer) 1
+127.0.0.1:6379&gt;</pre></li><li><p><strong>type key</strong></p><p>获取指定key的类型。该命令将以字符串的格式返回。	返回的字符串为string、list、set、hash，如果key不存在返回none</p><pre class='md-fences mock-cm' style='display:block;position:relative'>127.0.0.1:6379&gt; type company
+string
+127.0.0.1:6379&gt; type mylist
+list
+127.0.0.1:6379&gt; type myset
+set
+127.0.0.1:6379&gt; type myhash
+hash
+127.0.0.1:6379&gt;</pre><p>​</p></li></ul><h1><a name='header-c418' class='md-header-anchor '></a>第6章 Redis的持久化</h1><h2><a name='header-c419' class='md-header-anchor '></a>6.1 Redis持久化概述</h2><p>Redis的高性能是由于其将所有数据都存储在了内存中，为了使Redis在重启之后仍能保证数据不丢失，需要将数据从内存中同步到硬盘中，这一过程就是持久化。Redis支持两种方式的持久化，一种是RDB方式，一种是AOF方式。可以单独使用其中一种或将二者结合使用。</p><ul><li><p>RDB持久化（默认支持，无需配置）</p><p>该机制是指在指定的时间间隔内将内存中的数据集快照写入磁盘。</p></li><li><p>AOF持久化</p><p>该机制将以日志的形式记录服务器所处理的每一个写操作，在Redis服务器启动之初会读取该文件来重新构建数据库，以保证启动后数据库中的数据是完整的。</p></li><li><p>无持久化</p><p>我们可以通过配置的方式禁用Redis服务器的持久化功能，这样我们就可以将Redis视为一个功能加强版的memcached了。</p></li><li><p>redis可以同时使用RDB和AOF</p></li></ul><h2><a name='header-c441' class='md-header-anchor '></a>6.2 RDB持久化机制</h2><h3><a name='header-c442' class='md-header-anchor '></a>6.2.1 RDB持久化机制优点</h3><ul><li>一旦采用该方式，那么你的整个Redis数据库将只包含一个文件，这对于文件备份而言是非常完美的。比如，你可能打算每个小时归档一次最近24小时的数据，同时还要每天归档一次最近30天的数据。通过这样的备份策略，一旦系统出现灾难性故障，我们可以非常容易的进行恢复。</li></ul><ul><li>对于灾难恢复而言，RDB是非常不错的选择。因为我们可以非常轻松的将一个单独的文件压缩后再转移到其它存储介质上</li></ul><ul><li>性能最大化。对于Redis的服务进程而言，在开始持久化时，它唯一需要做的只是fork（分叉）出子进程，之后再由子进程完成这些持久化的工作，这样就可以极大的避免服务进程执行IO操作了。</li></ul><p>相比于AOF机制，如果数据集很大，RDB的启动效率会更高</p><p>特点:只会将最终的数据持久化到本地。</p><h3><a name='header-c459' class='md-header-anchor '></a>6.2.2 RDB持久化机制缺点</h3><ul><li>如果你想保证数据的高可用性，即最大限度的避免数据丢失，那么RDB将不是一个很好的选择。因为系统一旦在定时持久化之前出现宕机现象，此前没有来得及写入磁盘的数据都将丢失。</li></ul><ul><li>由于RDB是通过fork子进程来协助完成数据持久化工作的，因此，如果当数据集较大时，可能会导致整个服务器停止服务几百毫秒，甚至是1秒钟</li></ul><h3><a name='header-c468' class='md-header-anchor '></a>6.2.3 RDB持久化机制的配置</h3><p>在redis.windows.conf配置文件中有如下配置：</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;">################################ SNAPSHOTTING  #################################</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># Save the DB on disk:</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; save &lt;seconds&gt; &lt;changes&gt;</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; Will save the DB if both the given number of seconds and the given</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; number of write operations against the DB occurred.</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; In the example below the behaviour will be to save:</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; after 900 sec (15 min) if at least 1 key changed</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; after 300 sec (5 min) if at least 10 keys changed</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; after 60 sec if at least 10000 keys changed</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; Note: you can disable saving at all commenting all the "save" lines.</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; It is also possible to remove all the previously configured save</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; points by adding a save directive with a single empty string argument</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; like in the following example:</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># &nbsp; save ""</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;">save 900 1</span></pre><pre class=""><span style="padding-right: 0.1px;">save 300 10</span></pre><pre class=""><span style="padding-right: 0.1px;">save 60 10000</span></pre></div></div></div></div></div></div></div></pre><p>其中，上面配置的是RDB方式数据持久化时机：</p><table><thead><tr><th>关键字</th><th>时间(秒)</th><th>key修改数量</th><th>解释</th></tr></thead><tbody><tr><td>save</td><td>900</td><td>1</td><td>每900秒(15分钟)至少有1个key发生变化，则dump内存快照</td></tr><tr><td>save</td><td>300</td><td>10</td><td>每300秒(5分钟)至少有10个key发生变化，则dump内存快照</td></tr><tr><td>save</td><td>60</td><td>10000</td><td>每60秒(1分钟)至少有10000个key发生变化，则dump内存快照</td></tr></tbody></table><h2><a name='header-c495' class='md-header-anchor '></a>6.3 AOF持久化机制</h2><h3><a name='header-c496' class='md-header-anchor '></a>6.3.1 AOF持久化机制优点</h3><ul><li>该机制可以带来更高的数据安全性，即数据持久性。Redis中提供了3中同步策略，即每秒同步、每修改同步和不同步。事实上，每秒同步也是异步完成的，其效率也是非常高的，所差的是一旦系统出现宕机现象，那么这一秒钟之内修改的数据将会丢失。而每修改同步，我们可以将其视为同步持久化，即每次发生的数据变化都会被立即记录到磁盘中。可以预见，这种方式在效率上是最低的。至于无同步，无需多言，我想大家都能正确的理解它。</li></ul><ul><li>由于该机制对日志文件的写入操作采用的是append模式，因此在写入过程中即使出现宕机现象，也不会破坏日志文件中已经存在的内容。然而如果我们本次操作只是写入了一半数据就出现了系统崩溃问题，不用担心，在Redis下一次启动之前，我们可以通过redis-check-aof工具来帮助我们解决数据一致性的问题。</li></ul><ul><li>如果日志过大，Redis可以自动启用rewrite机制。即Redis以append模式不断的将修改数据写入到老的磁盘文件中，同时Redis还会创建一个新的文件用于记录此期间有哪些修改命令被执行。因此在进行rewrite切换时可以更好的保证数据安全性。</li></ul><ul><li>AOF包含一个格式清晰、易于理解的日志文件用于记录所有的修改操作。事实上，我们也可以通过该文件完成数据的重建</li></ul><h3><a name='header-c513' class='md-header-anchor '></a>6.3.2 AOF持久化机制缺点</h3><ul><li>对于相同数量的数据集而言，AOF文件通常要大于RDB文件</li></ul><ul><li>根据同步策略的不同，AOF在运行效率上往往会慢于RDB。总之，每秒同步策略的效率是比较高的，同步禁用策略的效率和RDB一样高效。</li></ul><h3><a name='header-c522' class='md-header-anchor '></a>6.3.3 AOF持久化机制配置</h3><h4><a name='header-c523' class='md-header-anchor '></a>6.3.3.1 开启AOF持久化</h4><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;">############################## APPEND ONLY MODE ###############################</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"># By default Redis asynchronously dumps the dataset on disk. This mode is</span></pre><pre class=""><span style="padding-right: 0.1px;"># good enough in many applications, but an issue with the Redis process or</span></pre><pre class=""><span style="padding-right: 0.1px;"># a power outage may result into a few minutes of writes lost (depending on</span></pre><pre class=""><span style="padding-right: 0.1px;"># the configured save points).</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># The Append Only File is an alternative persistence mode that provides</span></pre><pre class=""><span style="padding-right: 0.1px;"># much better durability. For instance using the default data fsync policy</span></pre><pre class=""><span style="padding-right: 0.1px;"># (see later in the config file) Redis can lose just one second of writes in a</span></pre><pre class=""><span style="padding-right: 0.1px;"># dramatic event like a server power outage, or a single write if something</span></pre><pre class=""><span style="padding-right: 0.1px;"># wrong with the Redis process itself happens, but the operating system is</span></pre><pre class=""><span style="padding-right: 0.1px;"># still running correctly.</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># AOF and RDB persistence can be enabled at the same time without problems.</span></pre><pre class=""><span style="padding-right: 0.1px;"># If the AOF is enabled on startup Redis will load the AOF, that is the file</span></pre><pre class=""><span style="padding-right: 0.1px;"># with the better durability guarantees.</span></pre><pre class=""><span style="padding-right: 0.1px;">#</span></pre><pre class=""><span style="padding-right: 0.1px;"># Please check http://redis.io/topics/persistence for more information.</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;">appendonly no</span></pre></div></div></div></div></div></div></div></pre><p>将appendonly修改为yes，开启aof持久化机制，默认会在目录下产生一个appendonly.aof文件</p><h4><a name='header-c527' class='md-header-anchor '></a>6.3.3.2 AOF持久化时机</h4><pre class='md-fences mock-cm' style='display:block;position:relative'># appendfsync always
+appendfsync everysec
+# appendfsync no</pre><p>上述配置为aof持久化的时机，解释如下：</p><table><thead><tr><th>关键字</th><th>持久化时机</th><th>解释</th></tr></thead><tbody><tr><td>appendfsync</td><td>always</td><td>每执行一次更新命令，持久化一次</td></tr><tr><td>appendfsync</td><td>everysec</td><td>每秒钟持久化一次</td></tr><tr><td>appendfsync</td><td>no</td><td>不持久化</td></tr></tbody></table><h1><a name='header-c548' class='md-header-anchor '></a>第7章 Jedis的基本使用(重点)</h1><h2><a name='header-c549' class='md-header-anchor '></a>7.1 jedis的介绍</h2><p>Redis不仅是使用命令来操作，现在基本上主流的语言都有客户端支持，比如java、C、C#、C++、php、Node.js、Go等。 在官方网站里列一些Java的客户端，有Jedis、Redisson、Jredis、JDBC-Redis、等其中官方推荐使用Jedis和Redisson。 在企业中用的最多的就是Jedis，Jedis同样也是托管在github上，地址：<a href='https://github.com/xetorthio/jedis' target='_blank' >https://github.com/xetorthio/jedis</a>。</p><p><img src='image\7.png' alt='7' /></p><p></p><p>使用Jedis操作redis需要导入jar包如下：</p><p><img src='image/34.png' alt='img' /></p><h2><a name='header-c560' class='md-header-anchor '></a>7.2 jedis的基本操作</h2><h3><a name='header-c561' class='md-header-anchor '></a>7.2.1 jedis官方文档</h3><ul><li>官方文档地址：<a href='http://xetorthio.github.io/jedis/' target='_blank' >http://xetorthio.github.io/jedis/</a></li><li>官方API文档查询方式：</li></ul><p><img src='image\5.png' alt='5' /></p><h3><a name='header-c571' class='md-header-anchor '></a>7.2.2 jedis常用API</h3><table><thead><tr><th>方法</th><th>解释</th></tr></thead><tbody><tr><td>new Jedis(host, port)</td><td>创建jedis对象，参数host是redis服务器地址，参数port是redis服务端口</td></tr><tr><td>set(key,value)</td><td>设置字符串类型的数据</td></tr><tr><td>get(key)</td><td>获得字符串类型的数据</td></tr><tr><td>hset(key,field,value)</td><td>设置哈希类型的数据</td></tr><tr><td>hget(key,field)</td><td>获得哈希类型的数据</td></tr><tr><td>lpush(key,values)</td><td>设置列表类型的数据</td></tr><tr><td>lpop(key)</td><td>列表左面弹栈</td></tr><tr><td>rpop(key)</td><td>列表右面弹栈</td></tr><tr><td>del(key)</td><td>删除指定的key</td></tr></tbody></table><h3><a name='header-c603' class='md-header-anchor '></a>7.2.3 jedis的基本操作</h3><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-meta">@Test</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-def">testJedisSingle</span>(){</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//1 设置ip地址和端口</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">Jedis</span> <span class="cm-variable">jedis</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Jedis</span>(<span class="cm-string">"localhost"</span>, <span class="cm-number">6379</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//2 设置数据</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">jedis</span>.<span class="cm-variable">set</span>(<span class="cm-string">"name"</span>, <span class="cm-string">"itheima"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//3 获得数据</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable-3">String</span> <span class="cm-variable">name</span> <span class="cm-operator">=</span> <span class="cm-variable">jedis</span>.<span class="cm-variable">get</span>(<span class="cm-string">"name"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">System</span>.<span class="cm-variable">out</span>.<span class="cm-variable">println</span>(<span class="cm-variable">name</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//4 释放资源</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">jedis</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div></div></pre><h2><a name='header-c605' class='md-header-anchor '></a>7.3 jedis连接池的使用</h2><h3><a name='header-c606' class='md-header-anchor '></a>7.3.1 jedis连接池的基本概念</h3><p>jedis连接资源的创建与销毁是很消耗程序性能，所以jedis为我们提供了jedis的池化技术，jedisPool在创建时初始化一些连接资源存储到连接池中，使用jedis连接资源时不需要创建，而是从连接池中获取一个资源进行redis的操作，使用完毕后，不需要销毁该jedis连接资源，而是将该资源归还给连接池，供其他请求使用。</p><h3><a name='header-c609' class='md-header-anchor '></a>7.3.2 jedis连接池API查询方式</h3><p><img src='image\6.png' alt='6' /></p><h3><a name='header-c612' class='md-header-anchor '></a>7.3.3 jedisPool的基本使用</h3><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-meta">@Test</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable-3">void</span> <span class="cm-def">testJedisPool</span>(){</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//1 获得连接池配置对象，设置配置项</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">JedisPoolConfig</span> <span class="cm-variable">config</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JedisPoolConfig</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 1.1 最大连接数</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">config</span>.<span class="cm-variable">setMaxTotal</span>(<span class="cm-number">30</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 1.2  最大空闲连接数</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">config</span>.<span class="cm-variable">setMaxIdle</span>(<span class="cm-number">10</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//2 获得连接池</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">JedisPool</span> <span class="cm-variable">jedisPool</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JedisPool</span>(<span class="cm-variable">config</span>, <span class="cm-string">"localhost"</span>, <span class="cm-number">6379</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">//3 获得核心对象</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-variable">Jedis</span> <span class="cm-variable">jedis</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">try</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">jedis</span> <span class="cm-operator">=</span> <span class="cm-variable">jedisPool</span>.<span class="cm-variable">getResource</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">//4 设置数据</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">jedis</span>.<span class="cm-variable">set</span>(<span class="cm-string">"name"</span>, <span class="cm-string">"itcast"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">//5 获得数据</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">String</span> <span class="cm-variable">name</span> <span class="cm-operator">=</span> <span class="cm-variable">jedis</span>.<span class="cm-variable">get</span>(<span class="cm-string">"name"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">System</span>.<span class="cm-variable">out</span>.<span class="cm-variable">println</span>(<span class="cm-variable">name</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>} <span class="cm-keyword">catch</span> (<span class="cm-variable">Exception</span> <span class="cm-variable">e</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">e</span>.<span class="cm-variable">printStackTrace</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>} <span class="cm-keyword">finally</span>{</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">if</span>(<span class="cm-variable">jedis</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>){</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">jedis</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 虚拟机关闭时，释放pool资源</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">if</span>(<span class="cm-variable">jedisPool</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>){</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">jedisPool</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div></div></pre><h2><a name='header-c614' class='md-header-anchor '></a>7.4 案例-编写jedis连接池工具类</h2><p><strong>JedisUtils.java</strong></p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">package</span> <span class="cm-def">com</span>.<span class="cm-variable">itheima</span>.<span class="cm-variable">utils</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">java</span>.<span class="cm-variable">util</span>.<span class="cm-variable">ResourceBundle</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">redis</span>.<span class="cm-variable">clients</span>.<span class="cm-variable">jedis</span>.<span class="cm-variable">Jedis</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">redis</span>.<span class="cm-variable">clients</span>.<span class="cm-variable">jedis</span>.<span class="cm-variable">JedisPool</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">import</span> <span class="cm-variable">redis</span>.<span class="cm-variable">clients</span>.<span class="cm-variable">jedis</span>.<span class="cm-variable">JedisPoolConfig</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">JedisUtils</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">JedisPoolConfig</span> <span class="cm-variable">poolConfig</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">JedisPool</span> <span class="cm-variable">jedisPool</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">Integer</span> <span class="cm-variable">maxTotal</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">Integer</span> <span class="cm-variable">maxIdle</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">String</span> <span class="cm-variable">host</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">Integer</span> <span class="cm-variable">port</span> <span class="cm-operator">=</span> <span class="cm-atom">null</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">static</span>{</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">//读取配置文件 获得参数值</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">ResourceBundle</span> <span class="cm-variable">rb</span> <span class="cm-operator">=</span> <span class="cm-variable">ResourceBundle</span>.<span class="cm-variable">getBundle</span>(<span class="cm-string">"jedis"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">maxTotal</span> <span class="cm-operator">=</span> <span class="cm-variable-3">Integer</span>.<span class="cm-variable">parseInt</span>(<span class="cm-variable">rb</span>.<span class="cm-variable">getString</span>(<span class="cm-string">"jedis.maxTotal"</span>));</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">maxIdle</span> <span class="cm-operator">=</span> <span class="cm-variable-3">Integer</span>.<span class="cm-variable">parseInt</span>(<span class="cm-variable">rb</span>.<span class="cm-variable">getString</span>(<span class="cm-string">"jedis.maxIdle"</span>));</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">port</span> <span class="cm-operator">=</span> <span class="cm-variable-3">Integer</span>.<span class="cm-variable">parseInt</span>(<span class="cm-variable">rb</span>.<span class="cm-variable">getString</span>(<span class="cm-string">"jedis.port"</span>));</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">host</span> <span class="cm-operator">=</span> <span class="cm-variable">rb</span>.<span class="cm-variable">getString</span>(<span class="cm-string">"jedis.host"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">poolConfig</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JedisPoolConfig</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">poolConfig</span>.<span class="cm-variable">setMaxTotal</span>(<span class="cm-variable">maxTotal</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">poolConfig</span>.<span class="cm-variable">setMaxIdle</span>(<span class="cm-variable">maxIdle</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">jedisPool</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">JedisPool</span>(<span class="cm-variable">poolConfig</span>,<span class="cm-variable">host</span>,<span class="cm-variable">port</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">Jedis</span> <span class="cm-variable">getJedis</span>(){</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">Jedis</span> <span class="cm-variable">jedis</span> <span class="cm-operator">=</span> <span class="cm-variable">jedisPool</span>.<span class="cm-variable">getResource</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">return</span> <span class="cm-variable">jedis</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div></div></pre><p><strong>jedis.properties</strong></p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;">jedis.host=localhost</span></pre><pre class=""><span style="padding-right: 0.1px;">jedis.port=6379</span></pre><pre class=""><span style="padding-right: 0.1px;">jedis.maxTotal=30</span></pre><pre class=""><span style="padding-right: 0.1px;">jedis.maxIdle=10</span></pre></div></div></div></div></div></div></div></pre><p>我们在工作中，要存放的数据一般在JavaBean对象中，list集合中，map中--------&gt;redis中</p><p></p><p>redis中一般只能存放字符串，那么我们可以将对象转换成json字符串，并且存放到redis中。</p><p></p><p></p></div>
+</body>
+</html>

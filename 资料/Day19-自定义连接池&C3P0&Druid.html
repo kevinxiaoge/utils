@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>Day19-自定义连接池&amp;C3P0&amp;Druid.md</title><link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'><style type='text/css'>html, body {overflow-x: initial !important;}.CodeMirror { height: auto; }
+.CodeMirror-scroll { overflow-y: hidden; overflow-x: auto; }
+.CodeMirror-lines { padding: 4px 0px; }
+.CodeMirror pre { }
+.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { background-color: white; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); white-space: nowrap; background-color: rgb(247, 247, 247); }
+.CodeMirror-linenumbers { }
+.CodeMirror-linenumber { padding: 0px 3px 0px 5px; text-align: right; color: rgb(153, 153, 153); }
+.CodeMirror div.CodeMirror-cursor { border-left-width: 1px; border-left-style: solid; border-left-color: black; z-index: 3; }
+.CodeMirror div.CodeMirror-secondarycursor { border-left-width: 1px; border-left-style: solid; border-left-color: silver; }
+.CodeMirror.cm-keymap-fat-cursor div.CodeMirror-cursor { width: auto; border: 0px; z-index: 1; background: rgb(119, 238, 119); }
+.CodeMirror div.CodeMirror-cursor.CodeMirror-overwrite { }
+.cm-tab { display: inline-block; }
+.cm-s-typora-default .cm-header, .cm-s-typora-default .cm-property { color: rgb(217, 79, 138); }
+.cm-s-typora-default pre.cm-header1:not(.cm-atom) :not(.cm-overlay) { font-size: 2rem; line-height: 2rem; }
+.cm-s-typora-default pre.cm-header2:not(.cm-atom) :not(.cm-overlay) { font-size: 1.4rem; line-height: 1.4rem; }
+.cm-s-typora-default .cm-atom, .cm-s-typora-default .cm-number { color: rgb(149, 132, 134); }
+.cm-s-typora-default .cm-table-row, .cm-s-typora-default .cm-block-start { font-family: monospace; }
+.cm-s-typora-default .cm-comment { color: rgb(74, 90, 159); font-family: monospace; }
+.cm-s-typora-default .cm-tag { color: rgb(169, 68, 66); }
+.cm-s-typora-default .cm-string { color: rgb(126, 134, 169); }
+.cm-s-typora-default .cm-link { color: rgb(196, 122, 15); text-decoration: underline; }
+.cm-s-typora-default .cm-variable-2, .cm-s-typora-default .cm-variable-1 { color: inherit; }
+.cm-s-typora-default .cm-overlay { font-size: 1rem; font-family: monospace; }
+.CodeMirror.cm-s-typora-default div.CodeMirror-cursor { border-left-width: 3px; border-left-style: solid; border-left-color: rgb(228, 98, 154); }
+.cm-s-typora-default .CodeMirror-activeline-background { left: -60px; right: -30px; background: rgba(204, 204, 204, 0.2); }
+.cm-s-typora-default .CodeMirror-gutters { border-right-style: none; background-color: inherit; }
+.cm-s-typora-default .cm-trailing-space-new-line::after, .cm-startspace::after, .cm-starttab .cm-tab::after { content: "•"; position: absolute; left: 0px; opacity: 0; font-family: LetterGothicStd, monospace; }
+.os-windows .cm-startspace::after, .os-windows .cm-starttab .cm-tab::after { left: -0.1em; }
+.cm-starttab .cm-tab::after { content: " "; }
+.cm-startspace, .cm-tab, .cm-starttab, .cm-trailing-space-a, .cm-trailing-space-b, .cm-trailing-space-new-line { font-family: monospace; position: relative; }
+.cm-s-typora-default .cm-trailing-space-new-line::after { content: "↓"; opacity: 0.3; }
+.cm-s-inner .cm-keyword { color: rgb(119, 0, 136); }
+.cm-s-inner .cm-atom, .cm-s-inner.cm-atom { color: rgb(34, 17, 153); }
+.cm-s-inner .cm-number { color: rgb(17, 102, 68); }
+.cm-s-inner .cm-def { color: rgb(0, 0, 255); }
+.cm-s-inner .cm-variable { color: black; }
+.cm-s-inner .cm-variable-2 { color: rgb(0, 85, 170); }
+.cm-s-inner .cm-variable-3 { color: rgb(0, 136, 85); }
+.cm-s-inner .cm-property { color: black; }
+.cm-s-inner .cm-operator { color: black; }
+.cm-s-inner .cm-comment, .cm-s-inner.cm-comment { color: rgb(170, 85, 0); }
+.cm-s-inner .cm-string { color: rgb(170, 17, 17); }
+.cm-s-inner .cm-string-2 { color: rgb(255, 85, 0); }
+.cm-s-inner .cm-meta { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-qualifier { color: rgb(85, 85, 85); }
+.cm-s-inner .cm-builtin { color: rgb(51, 0, 170); }
+.cm-s-inner .cm-bracket { color: rgb(153, 153, 119); }
+.cm-s-inner .cm-tag { color: rgb(17, 119, 0); }
+.cm-s-inner .cm-attribute { color: rgb(0, 0, 204); }
+.cm-s-inner .cm-header, .cm-s-inner.cm-header { color: blue; }
+.cm-s-inner .cm-quote, .cm-s-inner.cm-quote { color: rgb(0, 153, 0); }
+.cm-s-inner .cm-hr, .cm-s-inner.cm-hr { color: rgb(153, 153, 153); }
+.cm-s-inner .cm-link, .cm-s-inner.cm-link { color: rgb(0, 0, 204); }
+.cm-negative { color: rgb(221, 68, 68); }
+.cm-positive { color: rgb(34, 153, 34); }
+.cm-header, .cm-strong { font-weight: bold; }
+.cm-del { text-decoration: line-through; }
+.cm-em { font-style: italic; }
+.cm-link { text-decoration: underline; }
+.cm-error { color: rgb(255, 0, 0); }
+.cm-invalidchar { color: rgb(255, 0, 0); }
+div.CodeMirror span.CodeMirror-matchingbracket { color: rgb(0, 255, 0); }
+div.CodeMirror span.CodeMirror-nonmatchingbracket { color: rgb(255, 34, 34); }
+.CodeMirror-activeline-background { background: rgb(232, 242, 255); }
+.CodeMirror { position: relative; overflow: hidden; }
+.CodeMirror-scroll { margin-bottom: -30px; margin-right: -30px; padding-bottom: 30px; padding-right: 30px; height: 100%; outline: none; position: relative; box-sizing: content-box; }
+.CodeMirror-sizer { position: relative; }
+.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler { position: absolute; z-index: 6; display: none; }
+.CodeMirror-vscrollbar { right: 0px; top: 0px; overflow-x: hidden; overflow-y: scroll; }
+.CodeMirror-hscrollbar { bottom: 0px; left: 0px; overflow-y: hidden; overflow-x: scroll; }
+.CodeMirror-scrollbar-filler { right: 0px; bottom: 0px; }
+.CodeMirror-gutter-filler { left: 0px; bottom: 0px; }
+.CodeMirror-gutters { position: absolute; left: 0px; top: 0px; padding-bottom: 30px; z-index: 3; }
+.CodeMirror-gutter { white-space: normal; height: 100%; box-sizing: content-box; padding-bottom: 30px; margin-bottom: -32px; display: inline-block; }
+.CodeMirror-gutter-elt { position: absolute; cursor: default; z-index: 4; }
+.CodeMirror-lines { cursor: text; }
+.CodeMirror pre { border-radius: 0px; border-width: 0px; font-family: inherit; font-size: inherit; margin: 0px; white-space: pre; word-wrap: normal; color: inherit; z-index: 2; position: relative; overflow: visible; background: transparent; }
+.CodeMirror-wrap pre { word-wrap: break-word; white-space: pre-wrap; word-break: normal; }
+.CodeMirror-code pre { border-right-width: 30px; border-right-style: solid; border-right-color: transparent; width: fit-content; }
+.CodeMirror-wrap .CodeMirror-code pre { border-right-style: none; width: auto; }
+.CodeMirror-linebackground { position: absolute; left: 0px; right: 0px; top: 0px; bottom: 0px; z-index: 0; }
+.CodeMirror-linewidget { position: relative; z-index: 2; overflow: auto; }
+.CodeMirror-widget { }
+.CodeMirror-wrap .CodeMirror-scroll { overflow-x: hidden; }
+.CodeMirror-measure { position: absolute; width: 100%; height: 0px; overflow: hidden; visibility: hidden; }
+.CodeMirror-measure pre { position: static; }
+.CodeMirror div.CodeMirror-cursor { position: absolute; visibility: hidden; border-right-style: none; width: 0px; }
+.CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+.CodeMirror-focused div.CodeMirror-cursor { visibility: inherit; }
+.CodeMirror-selected { background: rgb(217, 217, 217); }
+.CodeMirror-focused .CodeMirror-selected { background: rgb(215, 212, 240); }
+.cm-searching { background: rgba(255, 255, 0, 0.4); }
+.CodeMirror span { }
+@media print { 
+  .CodeMirror div.CodeMirror-cursor { visibility: hidden; }
+}
+
+
+html { font-size: 14px; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; line-height: 1.42857; color: rgb(51, 51, 51); overflow-x: hidden; background-color: rgb(255, 255, 255); }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: rgb(181, 214, 252); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export #write { margin: 0px auto; }
+#write > p:first-child, #write > ul:first-child, #write > ol:first-child, #write > pre:first-child, #write > blockquote:first-child, #write > div:first-child, #write > table:first-child { margin-top: 30px; }
+img { max-width: 100%; }
+input, button, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+::before, ::after, * { box-sizing: border-box; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write div, #write pre { width: inherit; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { position: relative; }
+h1 { font-size: 2rem; }
+p { -webkit-margin-before: 1rem; -webkit-margin-after: 1rem; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }
+.mathjax-block { margin-top: 0px; margin-bottom: 0px; -webkit-margin-before: 0rem; -webkit-margin-after: 0rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: bold; font-style: italic; }
+a { cursor: pointer; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; margin: 4px 0px 0px; }
+tr { page-break-inside: avoid; page-break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; page-break-inside: auto; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+pre { white-space: pre-wrap; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences, pre.md-fences { font-size: 0.9rem; display: block; page-break-inside: avoid; text-align: left; overflow: visible; white-space: pre; position: relative !important; background: inherit; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -1.6em; margin-bottom: -1.6em; }
+.md-fences.mock-cm { white-space: pre-wrap; }
+.show-fences-line-number pre.md-fences { padding-left: 0px; }
+.show-fences-line-number pre.md-fences.mock-cm { padding-left: 40px; }
+.footnotes { color: rgb(136, 136, 136); font-size: 0.9rem; padding-top: 1em; padding-bottom: 1em; }
+.footnotes + .footnotes { margin-top: -1em; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: normal; text-align: left; box-sizing: content-box; direction: ltr; background: transparent; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li p, li .mathjax-block { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; }
+@media print { 
+  html, body { height: 100%; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  h1, h2, h3, h4, h5, h6 { page-break-after: avoid; orphans: 2; }
+  p { orphans: 4; }
+  @page { margin: 20mm 0mm; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+#write pre.md-meta-block { font-size: 0.8rem; min-height: 2.86rem; white-space: pre-wrap; display: block; background: rgb(204, 204, 204); }
+p > .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.mathjax-block { white-space: pre; overflow: hidden; width: 100%; }
+p + .mathjax-block { margin-top: -1.143rem; }
+.mathjax-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: none; box-shadow: none; }
+.task-list { list-style-type: none; }
+.task-list-item { position: relative; padding-left: 1em; }
+.task-list-item input { position: absolute; top: 0px; left: 0px; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc::after, .md-toc-content::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: bold; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+.md-toc-h6 { margin-left: 12em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 8em; }
+  .md-toc-h6 { margin-left: 9.5em; }
+}
+a.md-toc-inner { color: inherit; font-size: inherit; font-style: inherit; font-weight: inherit; text-decoration: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+.md-tag { opacity: 0.5; }
+code { text-align: left; }
+h1 .md-tag, h2 .md-tag, h3 .md-tag, h4 .md-tag, h5 .md-tag, h6 .md-tag { font-weight: initial; opacity: 0.35; }
+a.md-header-anchor.md-print-anchor { border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: none !important; text-decoration: initial !important; text-shadow: initial !important; background: transparent !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.mathjax-block .MathJax_SVG_Display { text-align: center; margin: 1em 0em; position: relative; text-indent: 0px; max-width: none; max-height: none; min-width: 0px; min-height: 0px; width: 100%; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: monospace; }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+
+
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: normal; src: local(Open Sans Regular), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: normal; src: local(Open Sans Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400i.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: bold; src: local(Open Sans Bold), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: bold; src: local(Open Sans Bold Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700i.woff) format(woff); }
+html { font-size: 16px; }
+body { font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+#write { max-width: 800px; margin: 0px auto; padding: 20px 30px 40px; }
+#write::after { height: 80px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+body > :first-child { margin-top: 0px !important; }
+body > :last-child { margin-bottom: 0px !important; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; -webkit-font-smoothing: antialiased; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 4px; padding: 0px; margin: 16px 0px; border-width: 0px 0px 1px; border-style: none none solid; overflow: hidden; box-sizing: content-box; border-bottom-color: rgb(221, 221, 221); background-color: rgb(231, 231, 231); }
+body > h2:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child + h2 { margin-top: 0px; padding-top: 0px; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child { margin-top: 0px; padding-top: 0px; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 { margin-top: 0px; padding-top: 0px; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p { margin-top: 0px; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; }
+table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); margin: 0px; padding: 0px; background-color: white; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); }
+pre.md-fences, .md-fences, code, tt { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; background-color: rgb(248, 248, 248); }
+pre.md-fences, .md-fences { margin-bottom: 15px; margin-top: 15px; padding: 8px 1em 6px; }
+.task-list { padding-left: 0px; }
+.task-list-item { padding-left: 32px; }
+.task-list-item input { top: 3px; left: 8px; }
+@media screen and (min-width: 914px) { 
+}
+@media print { 
+  table, pre { page-break-inside: avoid; }
+  pre { word-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; background-color: rgb(247, 247, 247); }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; color: inherit; background-color: rgb(248, 248, 248); }
+.md-tag { color: inherit; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; background-color: rgb(250, 250, 250); }
+
+
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-node'><h1><a name='header-c1' class='md-header-anchor '></a>连接池</h1><h2><a name='header-c6' class='md-header-anchor '></a>学习目标</h2><ol><li>能够理解连接池解决现状问题的原理(理解)</li><li>自定义连接池(选做)</li><li>代理模式(静态代理)(会用)</li><li>能够使用C3P0连接池(必须会用)</li><li>能够编写C3P0连接池工具类(必须会用)</li><li>能够使用DRUID连接池(必须会用)</li></ol><h1><a name='header-c26' class='md-header-anchor '></a>第1章 自定义连接池</h1><h2><a name='header-c27' class='md-header-anchor '></a>1.1 连接池概念</h2><p>​	我们现实生活中每日三餐。我们并不会吃一餐饭就将碗丢掉，而是吃完饭后将碗放到碗柜中，下一餐接着使用。目的是重复利用碗，我们的数据库连接也可以重复使用，可以减少数据库连接的创建次数。提高数据库连接对象的使用率。</p><p><strong>连接池的概念</strong>: 连接池是创建和管理数据库连接的缓冲池技术。连接池就是一个容器，连接池中保存了一些数据库连接，这些连接是可以重复使用的。</p><h2><a name='header-c32' class='md-header-anchor '></a>1.2 没有连接池的现状</h2><ol><li><p>之前JDBC访问数据库的步骤：
+<strong>创建数据库连接</strong> →<strong>运行SQL语句</strong>→<strong>关闭连接</strong>
+每次数据库访问执行这样重复的动作
+<img src='imgs\连接池01.png' alt='' /></p></li><li><p><strong>每次创建数据库连接的问题</strong></p><ul><li>获取数据库连接需要消耗比较多的资源，而每次操作都要重新获取新的连接对象，执行一次操作就把连接关闭，而数据库创建连接通常需要消耗相对较多的资源，创建时间也较长。这样数据库连接对象的使用率低。</li><li>假设网站一天10万访问量，数据库服务器就需要创建10万次连接，极大的浪费数据库的资源，并且极易造成数据库服务器内存溢出</li></ul></li></ol><h2><a name='header-c50' class='md-header-anchor '></a>1.3 连接池解决现状问题的原理</h2><ol><li><p>连接池在初始化的时候会默认存放n个连接对象并存放到一个容器(LinkedList)中</p></li><li><p>当需要的连接的时候，如果连接池中有连接就直接从连接池中获取，如果连接池中没有则新创建连接，如果连接数大于最大连接数时，如果再有请求需要获取连接则将其添加到等待队列</p></li><li><p>对于新创建的连接，一般不会直接销毁，它将被放到连接池中等待重复使用,只有当空闲超时后被释放。</p></li><li><p>对于原本就在连接池中的连接对象，用完之后直接放回连接池中</p></li><li><p>连接池中的连接数在空闲时会逐渐趋近于最小连接数,连接池在满载时的连接数会接近最大连接数。</p><p>​
+<img src='imgs\连接池02.png' alt='' /></p></li></ol><p><strong>数据库连接池相关API</strong>
+​        Java为数据库连接池提供了公共的接口: <code>javax.sql.DataSource</code>，各个厂商需要让自己的连接池实现这个接口。这样应用程序可以方便的切换不同厂商的连接池。</p><p>数据源(连接池)接口：<code>javax.sql.DataSource</code>中的方法</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure">AخA</div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">Connection</span> <span class="cm-def">getConnection</span>() </span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">从连接池中取出一个连接。</span></span></pre></div></div></div></div></div></div></div></pre><p>常见的连接池: <code>C3P0</code>、<code>Druid</code>、<code>DBCP</code>等</p><h2><a name='header-c78' class='md-header-anchor '></a>1.4自定义连接池的要求</h2><ol><li>在连接池初始化的时候默认存放5个连接对象</li><li>当需要连接时，如果连接池中有连接则直接从连接池中获取，没有则新创建</li><li>原本就在连接池中的连接，用完之后直接还回连接池中。从连接池的头部获取连接，从连接池的尾部归还连接</li><li>对于新创建的连接，用完之后直接销毁。(咱们的特殊要求)</li></ol><h3><a name='header-c92' class='md-header-anchor '></a>1.4.1自定义连接池第一个版本</h3><ul><li><ol><li>定义一个MyThreadPool类,该类有一个成员变量pool是LinkedList类型，用于存放连接对象的容器。</li></ol></li><li><ol><li>该类有两个方法，分别用于获取连接对象和归还连接对象</li></ol><ul><li>2.1.  获取连接的方法:当pool的长度大于零时从pool中获取(调用removeFirst()方法),当pool的长度小于等于零的时候，创建一个Connection对象</li><li>2.2.  归还连接的方法:调用pool的addLast()方法</li></ul></li><li><ol><li>该版本的缺点:如果连接不是原本就在连接池中的连接，也会归还到连接池中去，造成了连接池的体积越来越庞大，内存占用越来越多。</li></ol></li><li><ol><li>解决方法:是原本就在连接池中的连接就归还到连接池中，是新创建的连接就直接销毁。</li></ol></li></ul><pre class='md-fences mock-cm' style='display:block;position:relative'>public class MyConnectionPool {
+	private LinkedList&lt;Connection&gt; pool = new LinkedList&lt;&gt;();
+	private String password = &quot;123&quot;;
+	private String user = &quot;root&quot;;
+	private String url = &quot;jdbc:mysql://localhost:3306/day09_1&quot;;
+	static{
+		//注册驱动
+		try {
+			Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	public MyConnectionPool() throws SQLException{
+		//初始化的时候，往容器中存放五个连接对象
+		for(int i=0;i&lt;5;i++){
+			Connection conn = DriverManager.getConnection(url, user, password);
+			pool.add(conn);
+		}
+	}
+	public Connection getConnectionFromPool() throws SQLException{
+		//从pool的头部拿连接
+		//如果池子中有连接，就直接从池子中取
+		Connection connection = null;
+		if (pool.size() &gt; 0) {
+			connection = pool.removeFirst();
+		}else {
+			//池子中没有连接了
+			//先等待，等待超时之后，就新创建连接
+			connection = DriverManager.getConnection(url, user, password);
+		}
+		return connection;
+	}
+	public int getCount(){
+		return pool.size();
+	}
+	public void addBack(Connection conn){
+		//如果是原本就在池子中的，就归还到池子中
+		//如果是新创建的连接，就直接销毁
+		pool.addLast(conn);
+	}
+}</pre><p></p><h3><a name='header-c124' class='md-header-anchor '></a>1.4.2自定义连接池第二个版本</h3><ul><li><ol><li>自定义一个MyConnection类实现Connection接口,初始化连接池对象的时候往容器中存入n个MyConnection的对象。而新创建Connection的时候，则创建MySQL驱动中实现类的对象，这样就能区分拿个连接是新创建的或者是原本就在连接池中的了。</li></ol></li><li><ol><li>在归还连接的时候，使用instance of 判断如果该对象是MyConnection类型则归还到连接池中，否则直接销毁。</li></ol></li><li><ol><li>该版本缺点:初始化存放在连接池中MyConnection对象的方法都是空实现</li></ol></li><li><ol><li>解决方法:将MySQL驱动中实现类的对象传入到MyConnection类中，去帮助MyConnection类实现方法</li></ol></li></ul><pre class='md-fences mock-cm' style='display:block;position:relative'>/**
+ * 优化:区分原本就在池子中的连接和新创建的连接
+ *
+ */
+public class MyConnectionPool2 {
+	private LinkedList&lt;Connection&gt; pool = new LinkedList&lt;&gt;();
+	private String password = &quot;123&quot;;
+	private String user = &quot;root&quot;;
+	private String url = &quot;jdbc:mysql://localhost:3306/day09_1&quot;;
+	static{
+		//注册驱动
+		try {
+			Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	public MyConnectionPool2() throws SQLException{
+		//初始化的时候，往容器中存放五个连接对象------&gt;我们自定义的MyConnection的对象
+		for(int i=0;i&lt;5;i++){
+			Connection connection = DriverManager.getConnection(url, user, password);
+			Connection conn = new MyConnection(connection);
+			pool.add(conn);
+		}
+	}
+	public Connection getConnectionFromPool() throws SQLException{
+		//从pool的头部拿连接
+		//如果池子中有连接，就直接从池子中取
+		Connection connection = null;
+		if (pool.size() &gt; 0) {
+			connection = pool.removeFirst();
+		}else {
+			//池子中没有连接了
+			//先等待，等待超时之后，就新创建连接
+			connection = DriverManager.getConnection(url, user, password);
+		}
+		return connection;
+	}
+	public int getCount(){
+		return pool.size();
+	}
+	public void addBack(Connection conn) throws SQLException{
+		//如果是原本就在池子中的，就归还到池子中
+		//如果是新创建的连接，就直接销毁
+		//判断是原本就在池子中的还是新创建的
+		if (conn instanceof MyConnection) {
+			//原本就在池子中的
+			pool.addLast(conn);
+		}else {
+			//新创建的，就直接销毁
+			conn.close();
+		}
+	}
+}</pre><pre class='md-fences mock-cm' style='display:block;position:relative'>public class MyConnection implements Connection{
+	@Override
+	public void close() throws SQLException {
+		
+	}
+	public MyConnection() {
+	}
+	@Override
+	public &lt;T&gt; T unwrap(Class&lt;T&gt; iface) throws SQLException {
+		return null;
+	}
+
+	@Override
+	public boolean isWrapperFor(Class&lt;?&gt; iface) throws SQLException {
+		return false;
+	}
+
+	@Override
+	public Statement createStatement() throws SQLException {
+		return null;
+	}
+
+	@Override
+	public PreparedStatement prepareStatement(String sql) throws SQLException {
+		return null;
+	}
+
+	......所有方法都是空实现
+}</pre><p></p><h3><a name='header-c150' class='md-header-anchor '></a>1.4.3自定义连接池第三个版本</h3><ul><li><ol><li>从MyConnection类的构造函数中传入MySQL驱动中Connection的实现类的对象。</li></ol></li><li><ol><li>MyConnection类中需要实现的方法都由传入的connection对象来进行完成。</li></ol></li><li><ol><li>该版本的缺点:1.代码不够漂亮2.没有遵循sun公司的规则，即没有实现DataSource接口</li></ol></li></ul><pre class='md-fences mock-cm' style='display:block;position:relative'>public class MyConnection implements Connection{
+	private Connection conn;
+	public MyConnection(Connection conn) {
+		this.conn = conn;
+	}
+	public MyConnection() {
+	}
+	@Override
+	public &lt;T&gt; T unwrap(Class&lt;T&gt; iface) throws SQLException {
+		return null;
+	}
+
+	@Override
+	public boolean isWrapperFor(Class&lt;?&gt; iface) throws SQLException {
+		return false;
+	}
+
+	@Override
+	public Statement createStatement() throws SQLException {
+		
+		return conn.createStatement();
+	}
+
+	@Override
+	public PreparedStatement prepareStatement(String sql) throws SQLException {
+		return conn.prepareStatement(sql);
+	}
+
+	@Override
+	public CallableStatement prepareCall(String sql) throws SQLException {
+		return conn.prepareCall(sql);
+	}
+	......所有方法都由传入的connection对象实现
+}</pre><p></p><h3><a name='header-c170' class='md-header-anchor '></a>1.4.4自定义连接池第四个版本</h3><p>1.1.1. 让连接池类实现DataSource接口，并实现所有方法</p><p>1.1.2. 重写MyConnection类的close()方法，让其对象调用close()方法的时候完成将该对象归还到连接池中去。</p><pre class='md-fences mock-cm' style='display:block;position:relative'>public class MyConnectionPool4 implements DataSource{
+	private LinkedList&lt;Connection&gt; pool = new LinkedList&lt;&gt;();
+	private String password = &quot;123&quot;;
+	private String user = &quot;root&quot;;
+	private String url = &quot;jdbc:mysql://localhost:3306/day09_1&quot;;
+	static{
+		//注册驱动
+		try {
+			Class.forName(&quot;com.mysql.jdbc.Driver&quot;);
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	public MyConnectionPool4() throws SQLException{
+		//初始化的时候，往容器中存放五个连接对象------&gt;我们自定义的MyConnection的对象
+		for(int i=0;i&lt;5;i++){
+			Connection connection = DriverManager.getConnection(url, user, password);
+			Connection conn = new MyConnection(connection,pool);
+			pool.add(conn);
+		}
+	}
+	@Override
+	public Connection getConnection() throws SQLException {
+		//从pool的头部拿连接
+		//如果池子中有连接，就直接从池子中取
+		Connection connection = null;
+		if (pool.size() &gt; 0) {
+			connection = pool.removeFirst();
+		}else {
+			//池子中没有连接了
+			//先等待，等待超时之后，就新创建连接
+			connection = DriverManager.getConnection(url, user, password);
+		}
+		return connection;
+	}
+	......其它方法都空实现
+}</pre><pre class='md-fences mock-cm' style='display:block;position:relative'>public class MyConnection implements Connection{
+	private Connection conn;
+	private LinkedList&lt;Connection&gt; pool;
+	public MyConnection(Connection conn,LinkedList&lt;Connection&gt; pool) {
+		this.conn = conn;
+		this.pool = pool;
+	}
+	public MyConnection(Connection conn) {
+		this.conn = conn;
+	}
+	@Override
+	public void close() throws SQLException {
+		//重写这个close()方法，让其在调用这个close()方法的时候，将当前这个调用的连接对象归还到池子中
+		pool.addLast(this);
+	}
+	public MyConnection() {
+	}
+	@Override
+	public &lt;T&gt; T unwrap(Class&lt;T&gt; iface) throws SQLException {
+		return null;
+	}
+
+	@Override
+	public boolean isWrapperFor(Class&lt;?&gt; iface) throws SQLException {
+		return false;
+	}
+
+	@Override
+	public Statement createStatement() throws SQLException {
+		
+		return conn.createStatement();
+	}
+
+	@Override
+	public PreparedStatement prepareStatement(String sql) throws SQLException {
+		return conn.prepareStatement(sql);
+	}
+
+	@Override
+	public CallableStatement prepareCall(String sql) throws SQLException {
+		return conn.prepareCall(sql);
+	}
+	......除了close()方法之外，其它方法都用传入的connection对象实现
+}</pre><h2><a name='header-c177' class='md-header-anchor '></a>1.5代理模式</h2><h3><a name='header-c178' class='md-header-anchor '></a>1.5.1代理模式的概念</h3><p>​    ProxyPattern（即：代理模式），23种常用的面向对象软件的设计模式之一</p><p>​    代理模式的定义：为其他对象提供一种代理以控制对这个对象的访问。在某些情况下，一个对象不适合或者不能直接引用另一个对象，而代理对象可以在客户和目标对象之间起到中介的作用。</p><p>​    意义：为某个对象提供一个代理，以控制对这个对象的访问。 代理类和委托类有共同的父类或父接口，这样在任何使用委托类对象的地方都可以用代理对象替代。也可以增强一个类中的某个方法.或者对程序进行扩展在调用核心方法之前做前置处理，调用完核心方法之后做后置处理。</p><h3><a name='header-c185' class='md-header-anchor '></a>1.5.2代理模式的组成部分</h3><ul><li><ol><li>代理接口:代理类和委托类(被代理类)共同实现的接口</li></ol></li><li><ol><li>委托类:被代理的类,用于处理核心业务</li></ol></li><li><ol><li>代理类::负责对请求的预处理、过滤、将请求分派给委托类处理、以及委托类执行完请求后的后续处理。</li></ol></li></ul><h3><a name='header-c202' class='md-header-anchor '></a>1.5.3代理模式的分类</h3><h4><a name='header-c203' class='md-header-anchor '></a>1.5.3.1静态代理</h4><ul><li><p>概念:由程序员创建或工具生成代理类的源码，再编译代理类。所谓静态也就是在程序运行前就已经存在代理类的字节码文件，代理类和委托类的关系在运行前就确定了。</p></li><li><p>缺点:</p><ul><li>代理对象的一个接口只服务于一种类型的对象，如果要代理的方法很多，势必要为每一种方法都进行代理，静态代理在程序规模稍大时就无法胜任了。</li><li>如果接口增加一个方法，除了所有委托类需要实现这个方法外，所有代理类也需要实现此方法。增加了代码维护的复杂度。</li></ul></li></ul><h4><a name='header-c218' class='md-header-anchor '></a>1.5.3.2动态代理(今天先不学)</h4><ul><li><p>概念:动态代理与静态代理模式原理是一样的，只是动态代理类的源码是在程序运行期间由JVM根据反射等机制动态的生成，所以不存在代理类的字节码文件。代理者和委托者的关系是在程序运行时确定。</p></li><li><p>与动态代理相关的API</p><ul><li>java.lang.reflect.Proxy:这是 Java 动态代理机制生成的所有动态代理类的父类，它提供了一组静态方法来为一组接口动态地生成代理对象。</li></ul><pre class='md-fences mock-cm' style='display:block;position:relative'>Proxy.newProxyInstance(loader,interfaces,invacationHandler)</pre><ul><li>java.lang.reflect.InvocationHandler,这是调用处理器接口，它自定义了一个 invoke 方法，用于集中处理在动态代理类对象上的方法调用，通常在该方法中实现对委托类的代理访问。每次生成动态代理类对象时都要指定一个对应的调用处理器对象。</li></ul></li></ul><pre class='md-fences mock-cm' style='display:block;position:relative'>public class MyInvocationHandler implements InvocationHandler{
+	//缺少了委托者对象
+	private Object object;//委托者
+	
+	public MyInvocationHandler(Object object) {
+		super();
+		this.object = object;
+	}
+	@Override
+	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		//每次代理者调用方法都会触发invoke()方法
+		//proxy参数代表代理者本身,method参数代表代理者当前调用的方法,args代表代理者调用方法时传入的参数
+		//invoke()方法的返回值就是代理者调用的方法的返回值
+	}
+}</pre><p></p><h1><a name='header-c238' class='md-header-anchor '></a>第二章C3P0连接池</h1><h2><a name='header-c239' class='md-header-anchor '></a>2.1 C3P0连接池简介</h2><p>C3P0地址：<a href='https://sourceforge.net/projects/c3p0/?source=navbar' target='_blank' >https://sourceforge.net/projects/c3p0/?source=navbar</a>
+C3P0是一个开源的连接池。Hibernate框架，默认推荐使用C3P0作为连接池实现。
+C3P0的jar包：<code>c3p0-0.9.1.2.jar</code><img src='imgs\连接池04.png' alt='' /></p><pre class='md-fences mock-cm' style='display:block;position:relative'>mchange-commons-java-0.2.12.jar</pre><p></p><h2><a name='header-c247' class='md-header-anchor '></a>2.2 常用的配置参数解释</h2><p><strong>常用的配置参数：</strong></p><table><thead><tr><th>参数</th><th>说明</th></tr></thead><tbody><tr><td>initialPoolSize</td><td>初始连接数</td></tr><tr><td>maxPoolSize</td><td>最大连接数</td></tr><tr><td>checkoutTimeout</td><td>最大等待时间</td></tr><tr><td>maxIdleTime</td><td>最大空闲回收时间</td></tr></tbody></table><p><code>初始连接数</code>：刚创建好连接池的时候准备的连接数量
+<code>最大连接数</code>：连接池中最多可以放多少个连接
+<code>最大等待时间</code>：连接池中没有连接时最长等待时间
+<code>最大空闲回收时间</code>：连接池中的空闲连接多久没有使用就会回收</p><p>完整参数
+<img src='imgs\连接池03.png' alt='' /></p><h2><a name='header-c274' class='md-header-anchor '></a>2.3C3P0连接池基本使用</h2><h3><a name='header-c275' class='md-header-anchor '></a>2.3.1 C3P0配置文件</h3><p>​	我们看到要使用C3P0连接池，需要设置一些参数。那么这些参数怎么设置最为方便呢？使用配置文件方式。</p><p><strong>配置文件的要求：</strong></p><ol><li>文件名：c3p0-config.xml</li><li>放在源代码即src目录下</li><li>配置方式一：使用默认配置（default-config）</li><li>配置方式二：使用命名配置（named-config）</li></ol><p>配置文件c3p0-config.xml</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><span><span>​</span>x</span></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tag">&lt;c3p0-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;">  <span class="cm-comment">&lt;!-- 使用默认的配置读取连接池对象 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;">  <span class="cm-tag">&lt;default-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;">  <span class="cm-tab">  </span><span class="cm-comment">&lt;!--  连接参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"driverClass"</span><span class="cm-tag">&gt;</span>com.mysql.jdbc.Driver<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"jdbcUrl"</span><span class="cm-tag">&gt;</span>jdbc:mysql://localhost:3306/day25<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"user"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"password"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  </span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-comment">&lt;!-- 连接池参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"initialPoolSize"</span><span class="cm-tag">&gt;</span>5<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxPoolSize"</span><span class="cm-tag">&gt;</span>10<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"checkoutTimeout"</span><span class="cm-tag">&gt;</span>2000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxIdleTime"</span><span class="cm-tag">&gt;</span>1000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;">  <span class="cm-tag">&lt;/default-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;">  <span class="cm-tag">&lt;named-config</span> <span class="cm-attribute">name</span>=<span class="cm-string">"itheimac3p0"</span><span class="cm-tag">&gt;</span> </span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-comment">&lt;!--  连接参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"driverClass"</span><span class="cm-tag">&gt;</span>com.mysql.jdbc.Driver<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"jdbcUrl"</span><span class="cm-tag">&gt;</span>jdbc:mysql://localhost:3306/day25<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"user"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"password"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  </span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-comment">&lt;!-- 连接池参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"initialPoolSize"</span><span class="cm-tag">&gt;</span>5<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxPoolSize"</span><span class="cm-tag">&gt;</span>15<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"checkoutTimeout"</span><span class="cm-tag">&gt;</span>2000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp;  <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxIdleTime"</span><span class="cm-tag">&gt;</span>1000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;">  <span class="cm-tag">&lt;/named-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tag">&lt;/c3p0-config&gt;</span></span></pre></div></div></div></div></div></div></div></pre><h3><a name='header-c296' class='md-header-anchor '></a>2.3.2 API介绍</h3><p><code>com.mchange.v2.c3p0.ComboPooledDataSource</code>类表示C3P0的连接池对象，常用2种创建连接池的方式：<code>1.无参构造，使用默认配置</code>，<code>2.有参构造，使用命名配置</code></p><ol><li><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable">ComboPooledDataSource</span>()</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">无参构造使用默认配置（使用xml中default</span><span class="cm-operator">-</span><span class="cm-variable">config标签中对应的参数）</span></span></pre></div></div></div></div></div></div></div></pre></li><li><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable">ComboPooledDataSource</span>(<span class="cm-variable-3">String</span> <span class="cm-variable">configName</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">有参构造使用命名配置（configName：xml中配置的名称，使用xml中named</span><span class="cm-operator">-</span><span class="cm-variable">config标签中对应的参数）</span></span></pre></div></div></div></div></div></div></div></pre></li><li><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-variable">Connection</span> <span class="cm-def">getConnection</span>() <span class="cm-keyword">throws</span> <span class="cm-variable">SQLException</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">从连接池中取出一个连接</span></span></pre></div></div></div></div></div></div></div></pre></li></ol><h3><a name='header-c306' class='md-header-anchor '></a>2.3.3 使用步骤</h3><ol><li>导入jar包<code>c3p0-0.9.1.2.jar</code></li><li>编写<code>c3p0-config.xml</code>配置文件，配置对应参数</li><li>将配置文件放在src目录下</li><li>创建连接池对象<code>ComboPooledDataSource</code>，使用默认配置或命名配置</li><li>从连接池中获取连接对象</li><li>使用连接对象操作数据库</li><li>关闭资源</li></ol><h3><a name='header-c329' class='md-header-anchor '></a>2.3.4 注意事项</h3><p>C3P0配置文件名称必须为<code>c3p0-config.xml</code>
+C3P0命名配置可以有多个</p><h3><a name='header-c333' class='md-header-anchor '></a>2.3.5 案例代码</h3><ol><li><p>准备数据</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">CREATE</span> <span class="cm-keyword">TABLE</span> student (</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; id <span class="cm-builtin">INT</span> PRIMARY KEY AUTO_INCREMENT,</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; NAME <span class="cm-builtin">VARCHAR</span>(<span class="cm-number">20</span>),</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; age <span class="cm-builtin">INT</span>,</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; score <span class="cm-builtin">DOUBLE</span> DEFAULT <span class="cm-number">0.0</span></span></pre><pre class=""><span style="padding-right: 0.1px;">);</span></pre></div></div></div></div></div></div></div></pre></li><li><p>配置文件</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-tag">&lt;c3p0-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; <span class="cm-comment">&lt;!-- 使用默认的配置读取连接池对象 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; <span class="cm-tag">&lt;default-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-comment">&lt;!--  连接参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"driverClass"</span><span class="cm-tag">&gt;</span>com.mysql.jdbc.Driver<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"jdbcUrl"</span><span class="cm-tag">&gt;</span>jdbc:mysql://localhost:3306/day25<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"user"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"password"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-comment">&lt;!-- 连接池参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"initialPoolSize"</span><span class="cm-tag">&gt;</span>5<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxPoolSize"</span><span class="cm-tag">&gt;</span>10<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"checkoutTimeout"</span><span class="cm-tag">&gt;</span>2000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxIdleTime"</span><span class="cm-tag">&gt;</span>1000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; <span class="cm-tag">&lt;/default-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; <span class="cm-tag">&lt;named-config</span> <span class="cm-attribute">name</span>=<span class="cm-string">"itheimac3p0"</span><span class="cm-tag">&gt;</span> </span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-comment">&lt;!--  连接参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"driverClass"</span><span class="cm-tag">&gt;</span>com.mysql.jdbc.Driver<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"jdbcUrl"</span><span class="cm-tag">&gt;</span>jdbc:mysql://localhost:3306/day25<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"user"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"password"</span><span class="cm-tag">&gt;</span>root<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-comment">&lt;!-- 连接池参数 --&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"initialPoolSize"</span><span class="cm-tag">&gt;</span>5<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxPoolSize"</span><span class="cm-tag">&gt;</span>15<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"checkoutTimeout"</span><span class="cm-tag">&gt;</span>2000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-tag">&lt;property</span> <span class="cm-attribute">name</span>=<span class="cm-string">"maxIdleTime"</span><span class="cm-tag">&gt;</span>1000<span class="cm-tag">&lt;/property&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; <span class="cm-tag">&lt;/named-config&gt;</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-tag">&lt;/c3p0-config&gt;</span></span></pre></div></div></div></div></div></div></div></pre></li><li><p>java代码</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Demo01</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; <span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">void</span> <span class="cm-variable">main</span>(<span class="cm-variable-3">String</span>[] <span class="cm-variable">args</span>) <span class="cm-keyword">throws</span> <span class="cm-variable">Exception</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-comment">// 方式一: 使用默认配置（default-config）</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-comment">// new ComboPooledDataSource();</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-comment">//<span class="cm-tab"> </span><span class="cm-tab">    </span> ComboPooledDataSource ds = new ComboPooledDataSource();</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-comment">// 方式二： 使用命名配置（named-config：配置名）</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-comment">// new ComboPooledDataSource("配置名");</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">ComboPooledDataSource</span> <span class="cm-variable">ds</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">ComboPooledDataSource</span>(<span class="cm-string">"itheimac3p0"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-comment">//<span class="cm-tab"> </span><span class="cm-tab">    </span>for (int i = 0; i &lt; 10; i++) {</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-comment">//<span class="cm-tab"> </span><span class="cm-tab">    </span><span class="cm-tab">    </span>Connection conn = ds.getConnection();</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-comment">//<span class="cm-tab"> </span><span class="cm-tab">    </span><span class="cm-tab">    </span>System.out.println(conn);</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> <span class="cm-comment">//<span class="cm-tab"> </span><span class="cm-tab">    </span>}</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-comment">// 从连接池中取出连接</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">Connection</span> <span class="cm-variable">conn</span> <span class="cm-operator">=</span> <span class="cm-variable">ds</span>.<span class="cm-variable">getConnection</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-comment">// 执行SQL语句</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable-3">String</span> <span class="cm-variable">sql</span> <span class="cm-operator">=</span> <span class="cm-string">"INSERT INTO student VALUES (NULL, ?, ?, ?);"</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">PreparedStatement</span> <span class="cm-variable">pstmt</span> <span class="cm-operator">=</span> <span class="cm-variable">conn</span>.<span class="cm-variable">prepareStatement</span>(<span class="cm-variable">sql</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">pstmt</span>.<span class="cm-variable">setString</span>(<span class="cm-number">1</span>, <span class="cm-string">"张三"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">pstmt</span>.<span class="cm-variable">setInt</span>(<span class="cm-number">2</span>, <span class="cm-number">25</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">pstmt</span>.<span class="cm-variable">setDouble</span>(<span class="cm-number">3</span>, <span class="cm-number">99.5</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-operator">=</span> <span class="cm-variable">pstmt</span>.<span class="cm-variable">executeUpdate</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">System</span>.<span class="cm-variable">out</span>.<span class="cm-variable">println</span>(<span class="cm-string">"影响的行数： "</span> <span class="cm-operator">+</span> <span class="cm-variable">i</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">pstmt</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; &nbsp; &nbsp; <span class="cm-variable">conn</span>.<span class="cm-variable">close</span>(); <span class="cm-comment">// 将连接还回连接池中</span></span></pre><pre class=""><span style="padding-right: 0.1px;"> &nbsp; &nbsp; }</span></pre><pre class=""><span style="padding-right: 0.1px;"> }</span></pre></div></div></div></div></div></div></div></pre></li></ol><h3><a name='header-c347' class='md-header-anchor '></a>2.3.6 案例效果</h3><ol><li>正常获取连接池中连接</li></ol><p><img src='imgs\连接池06.png' alt='' /></p><ol><li>获取连接池中连接超时</li></ol><p><img src='imgs\连接池07.png' alt='' /></p><ol><li>使用连接池中的连接往数据库添加数据</li></ol><p><img src='imgs\连接池05.png' alt='' /></p><h3><a name='header-c366' class='md-header-anchor '></a>2.3.7 总结</h3><p>配置文件名称必须为：<code>c3p0-config.xml</code>，将配置文件放在src目录下
+使用配置文件方式好处：只需要单独修改配置文件，不用修改代码
+多个配置的好处：</p><ol><li>可以连接不同的数据库：db1,db2</li><li>可以使用不同的连接池参数：maxPoolSize</li><li>可以连接不同厂商的数据库：Oracle或MySQL</li></ol><h1><a name='header-c381' class='md-header-anchor '></a>第三章 DRUID连接池(德鲁伊)</h1><h2><a name='header-c382' class='md-header-anchor '></a>3.1 DRUID简介</h2><p>​	Druid是阿里巴巴开发的号称为监控而生的数据库连接池，Druid是目前最好的数据库连接池。在功能、性能、扩展性方面，都超过其他数据库连接池，同时加入了日志监控，可以很好的监控DB池连接和SQL的执行情况。Druid已经在阿里巴巴部署了超过600个应用，经过一年多生产环境大规模部署的严苛考验。Druid地址：<a href='https://github.com/alibaba/druid' target='_blank' >https://github.com/alibaba/druid</a> 
+DRUID连接池使用的jar包：<code>druid-1.0.9.jar</code><img src='imgs\连接池08.png' alt='' /></p><h2><a name='header-c386' class='md-header-anchor '></a>3.2 DRUID常用的配置参数</h2><p><strong>常用的配置参数：</strong></p><table><thead><tr><th>参数</th><th>说明</th></tr></thead><tbody><tr><td>jdbcUrl</td><td>连接数据库的url：mysql : jdbc:mysql://localhost:3306/druid2</td></tr><tr><td>username</td><td>数据库的用户名</td></tr><tr><td>password</td><td>数据库的密码</td></tr><tr><td>driverClassName</td><td>驱动类名。根据url自动识别，这一项可配可不配，如果不配置druid会根据url自动识别dbType，然后选择相应的driverClassName(建议配置下)</td></tr><tr><td>initialSize</td><td>初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时</td></tr><tr><td>maxActive</td><td>最大连接池数量</td></tr><tr><td>maxIdle</td><td>最大闲置连接数。已经不再使用，配置了也没效果</td></tr><tr><td>minIdle</td><td>最小连接池数量</td></tr><tr><td>maxWait</td><td>获取连接时最大等待时间，单位毫秒。</td></tr></tbody></table><h2><a name='header-c421' class='md-header-anchor '></a>3.3 DRUID连接池基本使用</h2><h3><a name='header-c422' class='md-header-anchor '></a>3.3.1 API介绍</h3><p><code>com.alibaba.druid.pool.DruidDataSourceFactory</code>类有创建连接池的方法</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">DataSource</span> <span class="cm-def">createDataSource</span>(<span class="cm-variable">Properties</span> <span class="cm-variable">properties</span>)</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-variable">创建一个连接池，连接池的参数使用properties中的数据</span></span></pre></div></div></div></div></div></div></div></pre><p>我们可以看到DRUID连接池在创建的时候需要一个Properties对象来设置参数，所以我们使用properties文件来保存对应的参数。
+DRUID连接池的配置文件名称随便，建议放到src目录下面方便加载。
+<code>druid.properties</code>文件内容：</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;">driverClassName=com.mysql.jdbc.Driver</span></pre><pre class=""><span style="padding-right: 0.1px;">url=jdbc:mysql://127.0.0.1:3306/day25</span></pre><pre class=""><span style="padding-right: 0.1px;">username=root</span></pre><pre class=""><span style="padding-right: 0.1px;">password=root</span></pre><pre class=""><span style="padding-right: 0.1px;">initialSize=5</span></pre><pre class=""><span style="padding-right: 0.1px;">maxActive=10</span></pre><pre class=""><span style="padding-right: 0.1px;">maxWait=3000</span></pre><pre class=""><span style="padding-right: 0.1px;">maxIdle=6</span></pre><pre class=""><span style="padding-right: 0.1px;">minIdle=3</span></pre></div></div></div></div></div></div></div></pre><h3><a name='header-c431' class='md-header-anchor '></a>3.3.2 使用步骤</h3><ol><li>在src目录下创建一个properties文件，并设置对应参数</li><li>加载properties文件的内容到Properties对象中</li><li>创建DRUID连接池，使用配置文件中的参数</li><li>从DRUID连接池中取出连接</li><li>执行SQL语句</li><li>关闭资源</li></ol><h3><a name='header-c451' class='md-header-anchor '></a>3.3.3 案例代码</h3><ol><li>在src目录下新建一个DRUID配置文件，命名为：druid.properties，内容如下</li></ol><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;">driverClassName=com.mysql.jdbc.Driver</span></pre><pre class=""><span style="padding-right: 0.1px;">url=jdbc:mysql://127.0.0.1:3306/day25</span></pre><pre class=""><span style="padding-right: 0.1px;">username=root</span></pre><pre class=""><span style="padding-right: 0.1px;">password=root</span></pre><pre class=""><span style="padding-right: 0.1px;">initialSize=5</span></pre><pre class=""><span style="padding-right: 0.1px;">maxActive=10</span></pre><pre class=""><span style="padding-right: 0.1px;">maxWait=3000</span></pre><pre class=""><span style="padding-right: 0.1px;">maxIdle=6</span></pre><pre class=""><span style="padding-right: 0.1px;">minIdle=3</span></pre></div></div></div></div></div></div></div></pre><p>java代码</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Demo02</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">void</span> <span class="cm-variable">main</span>(<span class="cm-variable-3">String</span>[] <span class="cm-variable">args</span>) <span class="cm-keyword">throws</span> <span class="cm-variable">Exception</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 加载配置文件中的配置参数</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">InputStream</span> <span class="cm-variable">is</span> <span class="cm-operator">=</span> <span class="cm-variable">Demo03</span>.<span class="cm-keyword">class</span>.<span class="cm-variable">getResourceAsStream</span>(<span class="cm-string">"/druid.properties"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">Properties</span> <span class="cm-variable">pp</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Properties</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pp</span>.<span class="cm-variable">load</span>(<span class="cm-variable">is</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 创建连接池，使用配置文件中的参数</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">DataSource</span> <span class="cm-variable">ds</span> <span class="cm-operator">=</span> <span class="cm-variable">DruidDataSourceFactory</span>.<span class="cm-variable">createDataSource</span>(<span class="cm-variable">pp</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment">//<span class="cm-tab">  </span><span class="cm-tab">    </span>for (int i = 0; i &lt; 10; i++) {</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment">//<span class="cm-tab">  </span><span class="cm-tab">    </span><span class="cm-tab">    </span>Connection conn = ds.getConnection();</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment">//<span class="cm-tab">  </span><span class="cm-tab">    </span><span class="cm-tab">    </span>System.out.println(conn);</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-comment">//<span class="cm-tab">  </span><span class="cm-tab">    </span>}</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 从连接池中取出连接</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">Connection</span> <span class="cm-variable">conn</span> <span class="cm-operator">=</span> <span class="cm-variable">ds</span>.<span class="cm-variable">getConnection</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 执行SQL语句</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">String</span> <span class="cm-variable">sql</span> <span class="cm-operator">=</span> <span class="cm-string">"INSERT INTO student VALUES (NULL, ?, ?, ?);"</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">PreparedStatement</span> <span class="cm-variable">pstmt</span> <span class="cm-operator">=</span> <span class="cm-variable">conn</span>.<span class="cm-variable">prepareStatement</span>(<span class="cm-variable">sql</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">setString</span>(<span class="cm-number">1</span>, <span class="cm-string">"王五"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">setInt</span>(<span class="cm-number">2</span>, <span class="cm-number">35</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">setDouble</span>(<span class="cm-number">3</span>, <span class="cm-number">88.5</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-operator">=</span> <span class="cm-variable">pstmt</span>.<span class="cm-variable">executeUpdate</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">System</span>.<span class="cm-variable">out</span>.<span class="cm-variable">println</span>(<span class="cm-string">"影响的行数： "</span> <span class="cm-operator">+</span> <span class="cm-variable">i</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 执行查询</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">sql</span> <span class="cm-operator">=</span> <span class="cm-string">"SELECT * FROM student;"</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">ResultSet</span> <span class="cm-variable">rs</span> <span class="cm-operator">=</span> <span class="cm-variable">pstmt</span>.<span class="cm-variable">executeQuery</span>(<span class="cm-variable">sql</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">while</span> (<span class="cm-variable">rs</span>.<span class="cm-variable">next</span>()) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">int</span> <span class="cm-variable">id</span> <span class="cm-operator">=</span> <span class="cm-variable">rs</span>.<span class="cm-variable">getInt</span>(<span class="cm-string">"id"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">String</span> <span class="cm-variable">name</span> <span class="cm-operator">=</span> <span class="cm-variable">rs</span>.<span class="cm-variable">getString</span>(<span class="cm-string">"name"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">int</span> <span class="cm-variable">age</span> <span class="cm-operator">=</span> <span class="cm-variable">rs</span>.<span class="cm-variable">getInt</span>(<span class="cm-string">"age"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">double</span> <span class="cm-variable">score</span> <span class="cm-operator">=</span> <span class="cm-variable">rs</span>.<span class="cm-variable">getDouble</span>(<span class="cm-string">"score"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">System</span>.<span class="cm-variable">out</span>.<span class="cm-variable">println</span>(<span class="cm-string">"id: "</span> <span class="cm-operator">+</span> <span class="cm-variable">id</span> <span class="cm-operator">+</span> <span class="cm-string">" ,name: "</span> <span class="cm-operator">+</span> <span class="cm-variable">name</span> <span class="cm-operator">+</span> <span class="cm-string">" ,age = "</span> <span class="cm-operator">+</span> <span class="cm-variable">age</span> <span class="cm-operator">+</span> <span class="cm-string">" ,score = "</span> <span class="cm-operator">+</span> <span class="cm-variable">score</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">conn</span>.<span class="cm-variable">close</span>(); <span class="cm-comment">// 将连接还回连接池中</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div></div></pre><h3><a name='header-c460' class='md-header-anchor '></a>3.3.4 案例效果</h3><ol><li>正常获取连接池中的连接
+<img src='imgs\连接池09.png' alt='' /></li><li>获取连接池中的连接超时
+<img src='imgs\连接池10.png' alt='' /></li><li>使用DRUID连接池中的连接操作数据库
+<img src='imgs\连接池11.png' alt='' /></li></ol><h3><a name='header-c474' class='md-header-anchor '></a>3.3.5 总结</h3><p>​	DRUID连接池根据Properties对象中的数据作为连接池参数去创建连接池，我们自己定义properties类型的配置文件，名称自己取，也可以放到其他路径，建议放到src目录下方便加载。
+​	不管是C3P0连接池，还是DRUID连接池，配置大致都可以分为2种：<code>1.连接数据库的参数</code>，<code>2.连接池的参数</code>，这2种配置大致参数作用都相同，只是参数名称可能不一样。</p><h2><a name='header-c479' class='md-header-anchor '></a>3.4 Jdbc工具类</h2><p>​	我们每次操作数据库都需要创建连接池，获取连接，关闭资源，都是重复的代码。我们可以将创建连接池和获取连接池的代码放到一个工具类中，简化代码。</p><p><strong>Jdbc工具类步骤：</strong></p><ol><li>声明静态数据源成员变量</li><li>创建连接池对象</li><li>定义公有的得到数据源的方法</li><li>定义得到连接对象的方法</li><li>定义关闭资源的方法</li></ol><p><strong>案例代码</strong>
+JdbcUtils.java</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">JdbcUtils</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 1.<span class="cm-tab">   </span>声明静态数据源成员变量</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">private</span> <span class="cm-keyword">static</span> <span class="cm-variable">DataSource</span> <span class="cm-variable">ds</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 2. 创建连接池对象</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">static</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 加载配置文件中的数据</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">InputStream</span> <span class="cm-variable">is</span> <span class="cm-operator">=</span> <span class="cm-variable">JdbcUtils</span>.<span class="cm-keyword">class</span>.<span class="cm-variable">getResourceAsStream</span>(<span class="cm-string">"/druid.properties"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">Properties</span> <span class="cm-variable">pp</span> <span class="cm-operator">=</span> <span class="cm-keyword">new</span> <span class="cm-variable">Properties</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">try</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pp</span>.<span class="cm-variable">load</span>(<span class="cm-variable">is</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 创建连接池，使用配置文件中的参数</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">ds</span> <span class="cm-operator">=</span> <span class="cm-variable">DruidDataSourceFactory</span>.<span class="cm-variable">createDataSource</span>(<span class="cm-variable">pp</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>} <span class="cm-keyword">catch</span> (<span class="cm-variable">IOException</span> <span class="cm-variable">e</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">e</span>.<span class="cm-variable">printStackTrace</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>} <span class="cm-keyword">catch</span> (<span class="cm-variable">Exception</span> <span class="cm-variable">e</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">e</span>.<span class="cm-variable">printStackTrace</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 3. 定义公有的得到数据源的方法</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">DataSource</span> <span class="cm-variable">getDataSource</span>() {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">return</span> <span class="cm-variable">ds</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 4. 定义得到连接对象的方法</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable">Connection</span> <span class="cm-variable">getConnection</span>() <span class="cm-keyword">throws</span> <span class="cm-variable">SQLException</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">return</span> <span class="cm-variable">ds</span>.<span class="cm-variable">getConnection</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 5.定义关闭资源的方法</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">void</span> <span class="cm-variable">close</span>(<span class="cm-variable">Connection</span> <span class="cm-variable">conn</span>, <span class="cm-variable">Statement</span> <span class="cm-variable">stmt</span>, <span class="cm-variable">ResultSet</span> <span class="cm-variable">rs</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">if</span> (<span class="cm-variable">rs</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">try</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">rs</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span>} <span class="cm-keyword">catch</span> (<span class="cm-variable">SQLException</span> <span class="cm-variable">e</span>) {}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">if</span> (<span class="cm-variable">stmt</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">try</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">stmt</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span>} <span class="cm-keyword">catch</span> (<span class="cm-variable">SQLException</span> <span class="cm-variable">e</span>) {}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">if</span> (<span class="cm-variable">conn</span> <span class="cm-operator">!=</span> <span class="cm-atom">null</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-keyword">try</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">conn</span>.<span class="cm-variable">close</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-tab">    </span>} <span class="cm-keyword">catch</span> (<span class="cm-variable">SQLException</span> <span class="cm-variable">e</span>) {}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-comment">// 6.重载关闭方法</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">void</span> <span class="cm-variable">close</span>(<span class="cm-variable">Connection</span> <span class="cm-variable">conn</span>, <span class="cm-variable">Statement</span> <span class="cm-variable">stmt</span>) {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">close</span>(<span class="cm-variable">conn</span>, <span class="cm-variable">stmt</span>, <span class="cm-atom">null</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div></div></pre><p>测试类代码</p><pre class="md-fences"><div class="code-tooltip md-tooltip-hide" align="right"></div> <div class="CodeMirror cm-s-inner CodeMirror-wrap"><div style="overflow: hidden; position: relative; width: 3px; height: 0px; top: 0px; left: 4px;"></div><div class="CodeMirror-hscrollbar" style="left: 0px;"></div><div class="CodeMirror-vscrollbar"></div><div class="CodeMirror-scroll" tabindex="-1"><div class="CodeMirror-sizer" style="margin-left: 0px; min-height: 0px;"><div style="position: relative; top: 0px;"><div class="CodeMirror-lines"><div style="position: relative; outline: none;"><div class="CodeMirror-measure"><pre><span>xxxxxxxxxx</span></pre></div><div class="CodeMirror-code"><pre class=""><span style="padding-right: 0.1px;"><span class="cm-keyword">public</span> <span class="cm-keyword">class</span> <span class="cm-def">Demo03</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-keyword">public</span> <span class="cm-keyword">static</span> <span class="cm-variable-3">void</span> <span class="cm-variable">main</span>(<span class="cm-variable-3">String</span>[] <span class="cm-variable">args</span>) <span class="cm-keyword">throws</span> <span class="cm-variable">Exception</span> {</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 拿到连接</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">Connection</span> <span class="cm-variable">conn</span> <span class="cm-operator">=</span> <span class="cm-variable">JdbcUtils</span>.<span class="cm-variable">getConnection</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 执行sql语句</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">String</span> <span class="cm-variable">sql</span> <span class="cm-operator">=</span> <span class="cm-string">"INSERT INTO student VALUES (NULL, ?, ?, ?);"</span>;</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">PreparedStatement</span> <span class="cm-variable">pstmt</span> <span class="cm-operator">=</span> <span class="cm-variable">conn</span>.<span class="cm-variable">prepareStatement</span>(<span class="cm-variable">sql</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">setString</span>(<span class="cm-number">1</span>, <span class="cm-string">"李四"</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">setInt</span>(<span class="cm-number">2</span>, <span class="cm-number">30</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">pstmt</span>.<span class="cm-variable">setDouble</span>(<span class="cm-number">3</span>, <span class="cm-number">50</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable-3">int</span> <span class="cm-variable">i</span> <span class="cm-operator">=</span> <span class="cm-variable">pstmt</span>.<span class="cm-variable">executeUpdate</span>();</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">System</span>.<span class="cm-variable">out</span>.<span class="cm-variable">println</span>(<span class="cm-string">"影响的函数: "</span> <span class="cm-operator">+</span> <span class="cm-variable">i</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span>​</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-comment">// 关闭资源</span></span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span><span class="cm-tab">    </span><span class="cm-variable">JdbcUtils</span>.<span class="cm-variable">close</span>(<span class="cm-variable">conn</span>, <span class="cm-variable">pstmt</span>);</span></pre><pre class=""><span style="padding-right: 0.1px;"><span class="cm-tab">    </span>}</span></pre><pre class=""><span style="padding-right: 0.1px;">}</span></pre></div></div></div></div></div></div></div></pre><blockquote><p>小结：使用Jdbc工具类后可以简化代码，我们只需要写SQL去执行。</p></blockquote><p><strong>使用ResourceBundle去读取properties文件中的内容</strong></p><pre class='md-fences mock-cm' style='display:block;position:relative'> //要读取info.properties文件中的内容
+        ResourceBundle bundle = ResourceBundle.getBundle(&quot;info&quot;);
+
+        //根据key获取value就搞定了
+        String password = bundle.getString(&quot;password&quot;);
+        System.out.println(password);</pre><p></p></div>
+</body>
+</html>

@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang='en'>
+<head>
+<meta charset='utf-8'>
+<title>day29Linux.md</title><link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,700,400&subset=latin,latin-ext' rel='stylesheet' type='text/css'><style type='text/css'>html, body {overflow-x: initial !important;}html { font-size: 14px; }
+body { margin: 0px; padding: 0px; height: auto; bottom: 0px; top: 0px; left: 0px; right: 0px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; line-height: 1.42857; color: rgb(51, 51, 51); overflow-x: hidden; background-color: rgb(255, 255, 255); }
+a:active, a:hover { outline: 0px; }
+.in-text-selection, ::selection { text-shadow: none; background: rgb(181, 214, 252); }
+#write { margin: 0px auto; height: auto; width: inherit; word-break: normal; word-wrap: break-word; position: relative; padding-bottom: 70px; white-space: pre-wrap; }
+body.typora-export { padding-left: 30px; padding-right: 30px; }
+.typora-export #write { margin: 0px auto; }
+#write > p:first-child, #write > ul:first-child, #write > ol:first-child, #write > pre:first-child, #write > blockquote:first-child, #write > div:first-child, #write > table:first-child { margin-top: 30px; }
+img { max-width: 100%; }
+input, button, select, textarea { color: inherit; font-style: inherit; font-variant: inherit; font-weight: inherit; font-stretch: inherit; font-size: inherit; line-height: inherit; font-family: inherit; }
+input[type="checkbox"], input[type="radio"] { line-height: normal; padding: 0px; }
+::before, ::after, * { box-sizing: border-box; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6, #write div, #write pre { width: inherit; }
+#write p, #write h1, #write h2, #write h3, #write h4, #write h5, #write h6 { position: relative; }
+h1 { font-size: 2rem; }
+p { -webkit-margin-before: 1rem; -webkit-margin-after: 1rem; -webkit-margin-start: 0px; -webkit-margin-end: 0px; }
+.mathjax-block { margin-top: 0px; margin-bottom: 0px; -webkit-margin-before: 0rem; -webkit-margin-after: 0rem; }
+.hidden { display: none; }
+.md-blockmeta { color: rgb(204, 204, 204); font-weight: bold; font-style: italic; }
+a { cursor: pointer; }
+#write input[type="checkbox"] { cursor: pointer; width: inherit; height: inherit; margin: 4px 0px 0px; }
+tr { page-break-inside: avoid; page-break-after: auto; }
+thead { display: table-header-group; }
+table { border-collapse: collapse; border-spacing: 0px; width: 100%; overflow: auto; page-break-inside: auto; }
+table.md-table td { min-width: 80px; }
+.CodeMirror-gutters { border-right-width: 0px; background-color: inherit; }
+.CodeMirror { text-align: left; }
+.CodeMirror-placeholder { opacity: 0.3; }
+.CodeMirror pre { padding: 0px 4px; }
+.CodeMirror-lines { padding: 0px; }
+div.hr:focus { cursor: none; }
+pre { white-space: pre-wrap; }
+.CodeMirror-gutters { margin-right: 4px; }
+.md-fences, pre.md-fences { font-size: 0.9rem; display: block; page-break-inside: avoid; text-align: left; overflow: visible; white-space: pre; position: relative !important; background: inherit; }
+.md-fences .CodeMirror.CodeMirror-wrap { top: -1.6em; margin-bottom: -1.6em; }
+.md-fences.mock-cm { white-space: pre-wrap; }
+.show-fences-line-number pre.md-fences { padding-left: 0px; }
+.show-fences-line-number pre.md-fences.mock-cm { padding-left: 40px; }
+.footnotes { color: rgb(136, 136, 136); font-size: 0.9rem; padding-top: 1em; padding-bottom: 1em; }
+.footnotes + .footnotes { margin-top: -1em; }
+.md-reset { margin: 0px; padding: 0px; border: 0px; outline: 0px; vertical-align: top; text-decoration: none; color: rgb(51, 51, 51); font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 1rem; text-shadow: none; float: none; position: static; width: auto; height: auto; white-space: nowrap; cursor: inherit; -webkit-tap-highlight-color: transparent; line-height: normal; font-weight: normal; text-align: left; box-sizing: content-box; direction: ltr; background: transparent; }
+li div { padding-top: 0px; }
+blockquote { margin: 1rem 0px; }
+li p, li .mathjax-block { margin: 0.5rem 0px; }
+li { margin: 0px; position: relative; }
+blockquote > :last-child { margin-bottom: 0px; }
+blockquote > :first-child { margin-top: 0px; }
+.footnotes-area { color: rgb(136, 136, 136); margin-top: 0.714rem; padding-bottom: 0.143rem; }
+@media print { 
+  html, body { height: 100%; }
+  .typora-export * { -webkit-print-color-adjust: exact; }
+  h1, h2, h3, h4, h5, h6 { page-break-after: avoid; orphans: 2; }
+  p { orphans: 4; }
+  @page { margin: 20mm 0mm; }
+}
+.footnote-line { margin-top: 0.714em; font-size: 0.7em; }
+a img, img a { cursor: pointer; }
+#write pre.md-meta-block { font-size: 0.8rem; min-height: 2.86rem; white-space: pre-wrap; display: block; background: rgb(204, 204, 204); }
+p > .md-image:only-child { display: inline-block; width: 100%; text-align: center; }
+#write .MathJax_Display { margin: 0.8em 0px 0px; }
+.mathjax-block { white-space: pre; overflow: hidden; width: 100%; }
+p + .mathjax-block { margin-top: -1.143rem; }
+.mathjax-block:not(:empty)::after { display: none; }
+[contenteditable="true"]:active, [contenteditable="true"]:focus { outline: none; box-shadow: none; }
+.task-list { list-style-type: none; }
+.task-list-item { position: relative; padding-left: 1em; }
+.task-list-item input { position: absolute; top: 0px; left: 0px; }
+.math { font-size: 1rem; }
+.md-toc { min-height: 3.58rem; position: relative; font-size: 0.9rem; border-radius: 10px; }
+.md-toc-content { position: relative; margin-left: 0px; }
+.md-toc::after, .md-toc-content::after { display: none; }
+.md-toc-item { display: block; color: rgb(65, 131, 196); text-decoration: none; }
+.md-toc-inner:hover { text-decoration: underline; }
+.md-toc-inner { display: inline-block; cursor: pointer; }
+.md-toc-h1 .md-toc-inner { margin-left: 0px; font-weight: bold; }
+.md-toc-h2 .md-toc-inner { margin-left: 2em; }
+.md-toc-h3 .md-toc-inner { margin-left: 4em; }
+.md-toc-h4 .md-toc-inner { margin-left: 6em; }
+.md-toc-h5 .md-toc-inner { margin-left: 8em; }
+.md-toc-h6 .md-toc-inner { margin-left: 10em; }
+.md-toc-h6 { margin-left: 12em; }
+@media screen and (max-width: 48em) { 
+  .md-toc-h3 .md-toc-inner { margin-left: 3.5em; }
+  .md-toc-h4 .md-toc-inner { margin-left: 5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 6.5em; }
+  .md-toc-h5 .md-toc-inner { margin-left: 8em; }
+  .md-toc-h6 { margin-left: 9.5em; }
+}
+a.md-toc-inner { color: inherit; font-size: inherit; font-style: inherit; font-weight: inherit; text-decoration: inherit; line-height: inherit; }
+.footnote-line a:not(.reversefootnote) { color: inherit; }
+.md-attr { display: none; }
+.md-fn-count::after { content: "."; }
+.md-tag { opacity: 0.5; }
+code { text-align: left; }
+h1 .md-tag, h2 .md-tag, h3 .md-tag, h4 .md-tag, h5 .md-tag, h6 .md-tag { font-weight: initial; opacity: 0.35; }
+a.md-header-anchor.md-print-anchor { border: none !important; display: inline-block !important; position: absolute !important; width: 1px !important; right: 0px !important; outline: none !important; text-decoration: initial !important; text-shadow: initial !important; background: transparent !important; }
+.md-inline-math .MathJax_SVG .noError { display: none !important; }
+.mathjax-block .MathJax_SVG_Display { text-align: center; margin: 1em 0em; position: relative; text-indent: 0px; max-width: none; max-height: none; min-width: 0px; min-height: 0px; width: 100%; display: block !important; }
+.MathJax_SVG_Display, .md-inline-math .MathJax_SVG_Display { width: auto; margin: inherit; display: inline-block !important; }
+.MathJax_SVG .MJX-monospace { font-family: monospace; }
+.MathJax_SVG .MJX-sans-serif { font-family: sans-serif; }
+.MathJax_SVG { display: inline; font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; text-indent: 0px; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0px; min-height: 0px; border: 0px; padding: 0px; margin: 0px; }
+.MathJax_SVG * { transition: none; }
+
+
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: normal; src: local(Open Sans Regular), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: normal; src: local(Open Sans Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/400i.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: normal; font-weight: bold; src: local(Open Sans Bold), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700.woff) format(woff); }
+@font-face { font-family: 'Open Sans'; font-style: italic; font-weight: bold; src: local(Open Sans Bold Italic), url(file:///C:/Users/Administrator/AppData/Roaming/Typora/themes/github/700i.woff) format(woff); }
+html { font-size: 16px; }
+body { font-family: 'Open Sans', 'Clear Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; color: rgb(51, 51, 51); line-height: 1.6; -webkit-font-smoothing: antialiased; }
+#write { max-width: 800px; margin: 0px auto; padding: 20px 30px 40px; }
+#write::after { height: 80px; }
+#write > ul:first-child, #write > ol:first-child { margin-top: 30px; }
+body > :first-child { margin-top: 0px !important; }
+body > :last-child { margin-bottom: 0px !important; }
+a { color: rgb(65, 131, 196); }
+h1, h2, h3, h4, h5, h6 { position: relative; margin-top: 1rem; margin-bottom: 1rem; font-weight: bold; line-height: 1.4; -webkit-font-smoothing: antialiased; cursor: text; }
+h1:hover a.anchor, h2:hover a.anchor, h3:hover a.anchor, h4:hover a.anchor, h5:hover a.anchor, h6:hover a.anchor { text-decoration: none; }
+h1 tt, h1 code { font-size: inherit; }
+h2 tt, h2 code { font-size: inherit; }
+h3 tt, h3 code { font-size: inherit; }
+h4 tt, h4 code { font-size: inherit; }
+h5 tt, h5 code { font-size: inherit; }
+h6 tt, h6 code { font-size: inherit; }
+h1 { padding-bottom: 0.3em; font-size: 2.25em; line-height: 1.2; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h2 { padding-bottom: 0.3em; font-size: 1.75em; line-height: 1.225; border-bottom-width: 1px; border-bottom-style: solid; border-bottom-color: rgb(238, 238, 238); }
+h3 { font-size: 1.5em; line-height: 1.43; }
+h4 { font-size: 1.25em; }
+h5 { font-size: 1em; }
+h6 { font-size: 1em; color: rgb(119, 119, 119); }
+p, blockquote, ul, ol, dl, table { margin: 0.8em 0px; }
+li > ol, li > ul { margin: 0px; }
+hr { height: 4px; padding: 0px; margin: 16px 0px; border-width: 0px 0px 1px; border-style: none none solid; overflow: hidden; box-sizing: content-box; border-bottom-color: rgb(221, 221, 221); background-color: rgb(231, 231, 231); }
+body > h2:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child { margin-top: 0px; padding-top: 0px; }
+body > h1:first-child + h2 { margin-top: 0px; padding-top: 0px; }
+body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child { margin-top: 0px; padding-top: 0px; }
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 { margin-top: 0px; padding-top: 0px; }
+h1 p, h2 p, h3 p, h4 p, h5 p, h6 p { margin-top: 0px; }
+li p.first { display: inline-block; }
+ul, ol { padding-left: 30px; }
+ul:first-child, ol:first-child { margin-top: 0px; }
+ul:last-child, ol:last-child { margin-bottom: 0px; }
+blockquote { border-left-width: 4px; border-left-style: solid; border-left-color: rgb(221, 221, 221); padding: 0px 15px; color: rgb(119, 119, 119); }
+blockquote blockquote { padding-right: 0px; }
+table { padding: 0px; }
+table tr { border-top-width: 1px; border-top-style: solid; border-top-color: rgb(204, 204, 204); margin: 0px; padding: 0px; background-color: white; }
+table tr:nth-child(2n) { background-color: rgb(248, 248, 248); }
+table tr th { font-weight: bold; border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr td { border: 1px solid rgb(204, 204, 204); text-align: left; margin: 0px; padding: 6px 13px; }
+table tr th:first-child, table tr td:first-child { margin-top: 0px; }
+table tr th:last-child, table tr td:last-child { margin-bottom: 0px; }
+.CodeMirror-gutters { border-right-width: 1px; border-right-style: solid; border-right-color: rgb(221, 221, 221); }
+pre.md-fences, .md-fences, code, tt { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; background-color: rgb(248, 248, 248); }
+pre.md-fences, .md-fences { margin-bottom: 15px; margin-top: 15px; padding: 8px 1em 6px; }
+.task-list { padding-left: 0px; }
+.task-list-item { padding-left: 32px; }
+.task-list-item input { top: 3px; left: 8px; }
+@media screen and (min-width: 914px) { 
+}
+@media print { 
+  table, pre { page-break-inside: avoid; }
+  pre { word-wrap: break-word; }
+}
+.md-fences { background-color: rgb(248, 248, 248); }
+#write pre.md-meta-block { padding: 1rem; font-size: 85%; line-height: 1.45; border: 0px; border-radius: 3px; color: rgb(119, 119, 119); margin-top: 0px !important; background-color: rgb(247, 247, 247); }
+.mathjax-block > .code-tooltip { bottom: 0.375rem; }
+#write > h3.md-focus::before { left: -1.5625rem; top: 0.375rem; }
+#write > h4.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h5.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+#write > h6.md-focus::before { left: -1.5625rem; top: 0.285714rem; }
+.md-image > .md-meta { border: 1px solid rgb(221, 221, 221); border-radius: 3px; font-family: Consolas, 'Liberation Mono', Courier, monospace; padding: 2px 4px 0px; font-size: 0.9em; color: inherit; background-color: rgb(248, 248, 248); }
+.md-tag { color: inherit; }
+.md-toc { margin-top: 20px; padding-bottom: 20px; }
+#typora-quick-open { border: 1px solid rgb(221, 221, 221); background-color: rgb(248, 248, 248); }
+#typora-quick-open-item { border-color: rgb(254, 254, 254) rgb(229, 229, 229) rgb(229, 229, 229) rgb(238, 238, 238); border-style: solid; border-width: 1px; background-color: rgb(250, 250, 250); }
+
+
+</style>
+</head>
+<body class='typora-export' >
+<div  id='write'  class = 'is-node'><h1><a name='header-c1' class='md-header-anchor '></a>day29 Linux</h1><p><strong>今日案例任务</strong></p><ul><li>在Linux上安装jdk</li><li>在Linux上安装Tomcat</li><li>在Linux上安装MySql</li><li>在Linux上安装Redis</li></ul><p><strong>教学目标</strong></p><ul><li>能在Linux上安装jdk</li><li>能在Linux上安装Tomcat</li><li>能在Linux上安装MySql</li><li>能在Linux上安装Redis</li></ul><h3><a name='header-c36' class='md-header-anchor '></a>一,在Linux上安装jdk</h3><h4><a name='header-c37' class='md-header-anchor '></a>1.rpm软件包管理器</h4><h5><a name='header-c38' class='md-header-anchor '></a>1.1概述</h5><p>​	一种用于互联网下载包的打包及安装工具，它包含在某些Linux(CentOs)发行版中。</p><h5><a name='header-c41' class='md-header-anchor '></a>1.2命令</h5><p>​	rpm -qa : 查询所有安装过的软件包</p><p>​	rpm -e --nodeps  删除的软件包名: 删除指定的安装包 </p><p>​	rpm -ivh 软件包名:安装rpm包</p><h4><a name='header-c48' class='md-header-anchor '></a>2.安装JDK步骤</h4><ol><li><p>下载jdk<br/></p></li><li><p>从windows上传到linux(可以使用FileZilla软件)</p></li><li><p>检查系统上是否安装了jdk(若安装了就需要先卸载再使用我们自己的)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>java -version </pre></li><li><p>查看出安装的java的软件包</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rpm -qa | grep java</pre></li><li><p>卸载linux自带的jdk</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rpm -e --nodeps java-1.6.0-openjdk-1.6.0.0-1.66.1.13.0.el6.i686
+rpm -e --nodeps java-1.7.0-openjdk-1.7.0.45-2.4.3.3.el6.i686 tzdata-java-2013g-1.el6.noarch</pre></li><li><p>在 /usr/local 新建一个文件夹 java</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mkdir /usr/local/java</pre></li><li><p>移动 jdk-8u171-linux-i586.tar.gz 到 /usr/local/java下</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mv jdk-8u171-linux-i586.tar.gz /usr/local/java</pre></li><li><p>进入 /usr/local/java 目录,解压jdk到当前目录</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd /usr/local/java 
+tar -zxvf  jdk-8u171-linux-i586.tar.gz</pre></li><li><p>配置环境变量<br/></p><pre class='md-fences mock-cm' style='display:block;position:relative'>vi /etc/profile
+   
+#在文件的最后面添加如下代码
+export JAVA_HOME=/usr/local/java/jdk1.8.0_171
+export PATH=$JAVA_HOME/bin:$PATH</pre></li><li><p>保存退出</p></li><li><p>重新加载配置文件</p></li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>   source /etc/profile</pre><p></p><h3><a name='header-c93' class='md-header-anchor '></a>二,在Linux上安装Tomcat</h3><h4><a name='header-c94' class='md-header-anchor '></a>1.安装Tomcat步骤</h4><ol><li><p>下载tomcat</p></li><li><p>上传到linux</p></li><li><p>在 /usr/local 新建一个文件夹tomcat</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mkdir /usr/local/tomcat</pre></li><li><p>移动 tomcat...tar.gz 到 /usr/local/tomcat</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mv apache-tomcat-8.5.27.tar.gz /usr/local/tomcat/</pre></li><li><p>进入/usr/local/tomcat目录,解压Tomcat</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd /usr/local/tomcat
+tar -zxvf apache-tomcat-8.5.27.tar.gz</pre></li><li><p>进入 /usr/local/tomcat/apache-tomcat-8.5.27/bin</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd /usr/local/tomcat/apache-tomcat-8.5.27/bin</pre></li><li><p>启动tomcat(执行startup.sh文件)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>方式1:
+	sh startup.sh
+方式2:
+	./startup.sh</pre></li><li><p>修改防火墙的规则</p><pre class='md-fences mock-cm' style='display:block;position:relative'>方式1:service iptables stop  关闭防火墙（太危险了!!!） 
+方式2:放行8080 端口
+	修改配置文件
+		cd /etc/sysconfig
+		vi iptables
+			复制(yy , p)	
+				-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+			改成
+				-A INPUT -m state --state NEW -m tcp -p tcp --dport 8080 -j ACCEPT
+		重启加载防火墙或者重启防火墙
+			service iptables reload  
+			或者
+			service iptables restart</pre></li></ol><h3><a name='header-c126' class='md-header-anchor '></a>三,在Linux上安装MySql</h3><h4><a name='header-c127' class='md-header-anchor '></a>1.安装MySql步骤</h4><ol><li><p>下载mysql</p></li><li><p>上传到linux  在CRT下,按Alt+P</p></li><li><p>检查系统上是否安装了mysql( 若安装了就需要先卸载再使用我们自己的)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rpm -qa |grep -i mysql                          #查看
+rpm -e --nodeps mysql-libs-5.1.71-1.el6.i686    #卸载</pre></li><li><p>在 /usr/local 新建一个文件夹mysql</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mkdir /usr/local/mysql</pre></li><li><p>把mysql压缩包移动 到/usr/local/mysql</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mv MySQL-5.6.22-1.el6.i686.rpm-bundle.tar /usr/local/mysql/</pre></li><li><p>进入 /usr/local/mysql,解包mysql(<strong>不要加Z</strong>)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd /usr/local/mysql
+tar -xvf MySQL-5.5.49-1.linux2.6.i386.rpm-bundle.tar</pre><p>​</p></li><li><p>安装 服务器端</p><pre class='md-fences mock-cm' style='display:block;position:relative'>rpm -ivh MySQL-server-5.5.49-1.linux2.6.i386.rpm </pre></li><li><p>安装 客户端 </p><pre class='md-fences mock-cm' style='display:block;position:relative'>rpm -ivh MySQL-client-5.5.49-1.linux2.6.i386.rpm </pre></li><li><p>启动Mysql</p><pre class='md-fences mock-cm' style='display:block;position:relative'>service mysql start  #启动mysql (注意:只启动一次)  </pre></li></ol><ol><li><p>查看密码:在root目录下 :cat .mysql_secret</p></li><li><p>登录mysql</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mysql -uroot -p密码</pre></li><li><p>修改密码:set password for root@localhost = password(&#39;123&#39;); </p></li><li><p>放行3306端口号</p></li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>   修改配置文件
+      	cd /etc/sysconfig
+      	vi iptables
+      复制(yy  p)	
+      	-A INPUT -m state --state NEW -m tcp -p tcp --dport 22 -j ACCEPT
+      改成
+      	-A INPUT -m state --state NEW -m tcp -p tcp --dport 3306 -j ACCEPT
+      重启加载防火墙或者重启防火墙
+      	service iptables reload  
+      	或者
+      	service iptables restart</pre><ol><li>mysql默认是不允许远程连接的，所以要先设置允许远程连接 mysql</li></ol><pre class='md-fences mock-cm' style='display:block;position:relative'>    在linux上 先登录mysql	
+      	cd /usr/local/mysql   #进入mysql目录
+      	mysql -uroot -p123    #登录
+      创建远程客户
+      	create user &#39;root&#39;@&#39;%&#39; identified by &#39;123&#39;;
+      授权
+      	grant all on *.* to &#39;root&#39;@&#39;%&#39; with grant option;
+      刷新权限
+      	flush privileges;</pre><h3><a name='header-c187' class='md-header-anchor '></a>四、将项目部署到Linux服务器上</h3><p>1.将数据库部署到Linux的mysql服务器上</p><p>2.将该项目导出成war文件</p><p>3.将war文件拷贝到Linux服务器的tomcat的webapps目录下</p><h3><a name='header-c194' class='md-header-anchor '></a>五,NoSql概述</h3><h4><a name='header-c195' class='md-header-anchor '></a>1.NoSql概念</h4><p>​	not only sql, 不仅仅是sql   泛指:非关系型数据库</p><h4><a name='header-c198' class='md-header-anchor '></a>2.NoSql的作用</h4><p>​	解决三高: 高并发,	大数据查数据, 高可靠和高扩展</p><h4><a name='header-c201' class='md-header-anchor '></a>3.NoSql的分类(了解)</h4><p>​	键值对:以map形式存储  key :value              redis <br/></p><p>​	文档:将整个对象存进去, json数据</p><p>​	图式: </p><p>​	列式: </p><h3><a name='header-c210' class='md-header-anchor '></a>六,Redis概述和安装</h3><h4><a name='header-c211' class='md-header-anchor '></a>1.什么是Redis</h4><p>​	由c语言编写的,以<strong>键值对的形式</strong>存储的数据库.  缓存技术(驻留在<strong>内存</strong>中)</p><p>​	key:value</p><p>​	支持5种数据类型:    <br/></p><p>​		String(重点)</p><p>​		Hash-----&gt;就是map</p><p>​		list ----&gt;列表类型</p><p>​		set----&gt;集合类型</p><p>​		sortedset(zset)----&gt;有序集合类型<br/></p><h4><a name='header-c228' class='md-header-anchor '></a>2.Redis的应用场景(了解)</h4><ul><li>缓存(最常使用)</li><li>聊天室的在线好友列表(经常变动)</li><li>任务队列(秒杀、抢购、12306)</li><li>应用排行榜</li></ul><h4><a name='header-c242' class='md-header-anchor '></a>3.Redis的安装</h4><ol><li><p>下载redis(<a href='http://redis.io/' target='_blank' >http://redis.io/</a>)</p></li><li><p>上传到linux</p></li><li><p>在 usr/local下新建文件夹 redis</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mkdir /usr/local/redis</pre></li><li><p>将root下的redis移动到 /usr/local/redis 然后解包</p><pre class='md-fences mock-cm' style='display:block;position:relative'>mv redis-3.0.7.tar.gz  /usr/local/redis/
+cd /usr/local/redis
+tar -zxvf redis-3.0.7.tar.gz</pre></li><li><p>安装c语言环境 (昨天已经安装的,可以不安装)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>yum install gcc-c++</pre></li><li><p>编译redis</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cd /usr/local/redis
+cd redis-3.0.7    进入redis-3.0.7目录
+make   执行make命令即可以编译</pre></li><li><p>安装redis</p><pre class='md-fences mock-cm' style='display:block;position:relative'>make PREFIX=/usr/local/redis install
+#安装成功之后 在redis目录下多出来一个bin目录</pre></li></ol><h4><a name='header-c270' class='md-header-anchor '></a>4.启动(服务器)</h4><h5><a name='header-c271' class='md-header-anchor '></a>4.1方式一(前台启动,不推荐)</h5><ol><li>在bin目录,执行 ./redis-server   默认端口号是6379</li></ol><h5><a name='header-c276' class='md-header-anchor '></a>4.2方式二(后台启动,推荐)</h5><ol><li><p>将redis-3.0.7目录下的redis.conf文件复制到 /usr/local/redis/bin 下</p><pre class='md-fences mock-cm' style='display:block;position:relative'>cp redis.conf /usr/local/redis/bin    #此时 bin目录下会多出一个dump.rdb,相当于redis备份</pre></li><li><p>修改redis/<strong>bin</strong>目录下的redis.conf 设置为 后台启动</p><pre class='md-fences mock-cm' style='display:block;position:relative'>vi redis.conf  </pre></li><li><p>进入到编辑redis.conf文件页面后，在命令模式下输入&quot;/daemonize&quot;表示查找&quot;daemonize&quot;这个关键字</p><pre class='md-fences mock-cm' style='display:block;position:relative'>/daemonize  </pre></li><li><p>将 daemonize 值改成yes即可</p></li><li><p>启动</p><pre class='md-fences mock-cm' style='display:block;position:relative'>在bin目录中执行   ./redis-server redis.conf</pre></li></ol><h4><a name='header-c297' class='md-header-anchor '></a>5.使用redis的客户端连接redis服务器</h4><h5><a name='header-c298' class='md-header-anchor '></a>5.1方式1:默认连接的本机6379端口</h5><pre class='md-fences mock-cm' style='display:block;position:relative'>./redis-cli</pre><h5><a name='header-c300' class='md-header-anchor '></a>5.2方式2:连接指定主机 指定端口号</h5><pre class='md-fences mock-cm' style='display:block;position:relative'>./redis-cli -h 192.168.92.128 -p 6379</pre><h5><a name='header-c302' class='md-header-anchor '></a>在其他电脑连接redis服务器</h5><p>放行6379端口号</p><ul><li>1.cd /etc/sysconfig</li><li>2.vi iptables</li><li>3.修改iptables文件，放行6379端口</li><li>4.service iptables reload,重启防火墙</li></ul><h4><a name='header-c319' class='md-header-anchor '></a>6.基本命令</h4><ul><li>set key value:设置   <br/></li><li>get key:获取指定的key对应的值</li><li>del key:删除指定的key</li><li>ping :测试是否连接成功</li><li>quit:退出</li></ul><h4><a name='header-c336' class='md-header-anchor '></a>7.关闭服务</h4><h5><a name='header-c337' class='md-header-anchor '></a>7.1方式一杀死进程(掌握)</h5><pre class='md-fences mock-cm' style='display:block;position:relative'>kill -9  pid
+
+</pre><h5><a name='header-c339' class='md-header-anchor '></a>7.2方式二使用客户端发送关闭命令(了解)</h5><ul><li><p>已经登录客户端,执行</p><pre class='md-fences mock-cm' style='display:block;position:relative'>shutdown
+</pre></li><li><p>或者没有登录客户端情况下,执行(不用掌握)</p><pre class='md-fences mock-cm' style='display:block;position:relative'>./redis-cli -h ip地址  -p 端口号(6379) shutdown</pre></li></ul></div>
+</body>
+</html>
